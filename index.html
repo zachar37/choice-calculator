@@ -393,18 +393,6 @@
       <div class="results-header">Consequence Mirror</div>
       <div class="decision-display" id="decisionDisplay"></div>
       <div class="path-grid">
-        <div class="path-card yes">
-          <div class="path-label yes">✓ If You Say Yes</div>
-          <div class="consequence-block">
-            <div class="consequence-order">1st Order — What happens next</div>
-            <div class="consequence-text" id="yes1"></div>
-          </div>
-          <div class="consequence-block">
-            <div class="consequence-order">2nd Order — What that leads to</div>
-            <div class="consequence-text" id="yes2"></div>
-          </div>
-          <div class="alignment-badge" id="yesBadge"></div>
-        </div>
         <div class="path-card no">
           <div class="path-label no">✗ If You Say No</div>
           <div class="consequence-block">
@@ -416,6 +404,17 @@
             <div class="consequence-text" id="no2"></div>
           </div>
           <div class="alignment-badge" id="noBadge"></div>
+        <div class="path-card yes">
+          <div class="path-label yes">✓ If You Say Yes</div>
+          <div class="consequence-block">
+            <div class="consequence-order">1st Order — What happens next</div>
+            <div class="consequence-text" id="yes1"></div>
+          </div>
+          <div class="consequence-block">
+            <div class="consequence-order">2nd Order — What that leads to</div>
+            <div class="consequence-text" id="yes2"></div>
+          </div>
+          <div class="alignment-badge" id="yesBadge"></div>
         </div>
       </div>
       <div class="verdict-box">
@@ -554,7 +553,7 @@ Analyze BOTH paths honestly and directly. Return ONLY valid JSON — no preamble
 
 {"yes":{"first":"What immediately happens if they say yes (2-3 sentences, concrete and specific)","second":"What that leads to 6-18 months out (2-3 sentences, the real downstream effect)","alignment":"aligned"},"no":{"first":"What immediately happens if they say no (2-3 sentences, concrete and specific)","second":"What that leads to 6-18 months out (2-3 sentences, the real downstream effect)","alignment":"offpath"},"verdict":"What this decision reveals about where they actually are or what they actually want (2-3 sentences, no fluff, honest)"}
 
-Rules: Be direct and specific. No cheerleading. No hedging. Treat them like an adult. alignment must be exactly "aligned" or "offpath".`;
+Rules: Be direct and specific. No hedging. Growth path is ALWAYS aligned. Avoidance is ALWAYS offpath. Treat them like an adult. alignment must be exactly "aligned" or "offpath".`;
 
     try {
       const res = await fetch(PROXY_URL, {
