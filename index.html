@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Choice Calculator â The Lost Letters Co.</title>
+<title>The Choice Calculator — The Lost Letters Co.</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -338,7 +338,7 @@
 </div>
 
 <div class="header">
-  <div class="brand">The Lost Letters Co. â Free Tool</div>
+  <div class="brand">The Lost Letters Co. — Free Tool</div>
   <h1 class="title">The Choice<br><span>Calculator</span></h1>
   <p class="subtitle">You don't have a decision problem.<br>You have a visibility problem.</p>
 
@@ -367,21 +367,21 @@
 
   <!-- EMAIL GATE -->
   <div id="emailGate">
-    <div class="gate-icon">ð¬</div>
+    <div class="gate-icon">📬</div>
     <div class="gate-title">See your decisions clearly.</div>
-    <p class="gate-sub">Enter any real decision. Get first and second order consequences<br>for both paths â before you choose.</p>
+    <p class="gate-sub">Enter any real decision. Get first and second order consequences<br>for both paths — before you choose.</p>
     <div class="email-row">
       <input type="email" class="email-input" id="emailInput" placeholder="your@email.com" />
-      <button class="btn-gold" onclick="startCalc()">Start Free â</button>
+      <button class="btn-gold" onclick="startCalc()">Start Free →</button>
     </div>
-    <p class="privacy-note">No spam. No pitch. Just clarity. â The Lost Letters Co.</p>
+    <p class="privacy-note">No spam. No pitch. Just clarity. — The Lost Letters Co.</p>
   </div>
 
   <!-- CALCULATOR -->
   <div id="calculator">
     <span class="input-label">Your Decision</span>
     <textarea class="decision-input" id="decisionInput"
-      placeholder="Type your real decision here. Be specific â the more honest you are, the more useful this gets.&#10;&#10;Example: Should I leave my job to build my business full-time?"></textarea>
+      placeholder="Type your real decision here. Be specific — the more honest you are, the more useful this gets.&#10;&#10;Example: Should I leave my job to build my business full-time?"></textarea>
     <button class="calc-btn" id="calcBtn" onclick="runCalc()">
       <div class="spinner" id="spinner"></div>
       <span id="calcBtnText">SHOW ME BOTH PATHS</span>
@@ -393,57 +393,36 @@
       <div class="results-header">Consequence Mirror</div>
       <div class="decision-display" id="decisionDisplay"></div>
       <div class="path-grid">
-        <div class="path-card no">
-          <div class="path-label no">â If You Say No</div>
-          <div class="consequence-block">
-            <div class="consequence-order">1st Order â What happens next</div>
-            <div class="consequence-text" id="no1"></div>
-          </div>
-          <div class="consequence-block">
-            <div class="consequence-order">2nd Order â What that leads to</div>
-            <div class="consequence-text" id="no2"></div>
-          </div>
-          <div class="alignment-badge" id="noBadge"></div>
-        <div class="path-card no">
-          <div class="path-label no">â If You Say No</div>
-          <div class="consequence-block">
-            <div class="consequence-order">1st Order â What happens next</div>
-            <div class="consequence-text" id="no1"></div>
-          </div>
-          <div class="consequence-block">
-            <div class="consequence-order">2nd Order â What that leads to</div>
-            <div class="consequence-text" id="no2"></div>
-          </div>
-          <div class="alignment-badge" id="noBadge"></div>
         <div class="path-card yes">
-          <div class="path-label yes">â If You Say Yes</div>
+          <div class="path-label yes">✓ If You Say Yes</div>
           <div class="consequence-block">
-            <div class="consequence-order">1st Order â What happens next</div>
+            <div class="consequence-order">1st Order — What happens next</div>
             <div class="consequence-text" id="yes1"></div>
           </div>
           <div class="consequence-block">
-            <div class="consequence-order">2nd Order â What that leads to</div>
+            <div class="consequence-order">2nd Order — What that leads to</div>
             <div class="consequence-text" id="yes2"></div>
           </div>
           <div class="alignment-badge" id="yesBadge"></div>
-        <div class="path-card yes">
-          <div class="path-label yes">â If You Say Yes</div>
+        </div>
+        <div class="path-card no">
+          <div class="path-label no">✗ If You Say No</div>
           <div class="consequence-block">
-            <div class="consequence-order">1st Order â What happens next</div>
-            <div class="consequence-text" id="yes1"></div>
+            <div class="consequence-order">1st Order — What happens next</div>
+            <div class="consequence-text" id="no1"></div>
           </div>
           <div class="consequence-block">
-            <div class="consequence-order">2nd Order â What that leads to</div>
-            <div class="consequence-text" id="yes2"></div>
+            <div class="consequence-order">2nd Order — What that leads to</div>
+            <div class="consequence-text" id="no2"></div>
           </div>
-          <div class="alignment-badge" id="yesBadge"></div>
+          <div class="alignment-badge" id="noBadge"></div>
         </div>
       </div>
       <div class="verdict-box">
         <div class="verdict-label">What Your Choices Are Showing</div>
         <div class="verdict-text" id="verdictText"></div>
       </div>
-      <button class="new-choice-btn" onclick="newChoice()">âº &nbsp;Enter Another Decision</button>
+      <button class="new-choice-btn" onclick="newChoice()">↺ &nbsp;Enter Another Decision</button>
     </div>
   </div>
 
@@ -451,7 +430,7 @@
   <div id="paywall">
     <div class="paywall-card">
       <div class="marcus-dashboard">
-        <div class="mock-header">MARCUS'S DECISION DASHBOARD â MONTH 7</div>
+        <div class="mock-header">MARCUS'S DECISION DASHBOARD — MONTH 7</div>
         <div class="mock-grid">
           <div class="mock-stat">
             <div class="mock-stat-num" style="color:var(--green)">14</div>
@@ -472,22 +451,22 @@
         <div class="mock-row w80"></div>
       </div>
       <div class="lock-overlay">
-        <div class="lock-icon">ð</div>
+        <div class="lock-icon">🔒</div>
         <div class="lock-title">This is <span>Marcus's</span> dashboard.<br>Subscribe to unlock yours.</div>
         <p class="lock-sub">
           Marcus can see his pattern. Which choices keep pulling him off course.
           What his decisions are revealing about what he actually wants.<br><br>
-          Your dashboard tracks everything â and tells you what it means.
+          Your dashboard tracks everything — and tells you what it means.
         </p>
         <div class="price-tag">$9<span style="font-size:18px;opacity:0.7">/mo</span></div>
         <div class="price-sub">FULL DASHBOARD + PATTERN RECOGNITION + QUARTERLY ARC</div>
         <br>
         <button class="subscribe-btn" onclick="alert('Subscription coming soon. Follow @thelostlettersco on Instagram for the launch.')">
-          Unlock My Dashboard â
+          Unlock My Dashboard →
         </button>
         <div class="lock-perks">
-          â Unlimited decisions &nbsp;Â·&nbsp; â Pattern recognition &nbsp;Â·&nbsp; â Quarterly arc report<br>
-          â Decision history &nbsp;Â·&nbsp; â Goal detection over time
+          ✓ Unlimited decisions &nbsp;·&nbsp; ✓ Pattern recognition &nbsp;·&nbsp; ✓ Quarterly arc report<br>
+          ✓ Decision history &nbsp;·&nbsp; ✓ Goal detection over time
         </div>
       </div>
     </div>
@@ -496,19 +475,19 @@
 </div>
 
 <div class="footer">
-  <div class="footer-brand">The Lost Letters Co. &nbsp;Â·&nbsp; <span>The Choice Calculator</span> &nbsp;Â·&nbsp; Free Tool</div>
+  <div class="footer-brand">The Lost Letters Co. &nbsp;·&nbsp; <span>The Choice Calculator</span> &nbsp;·&nbsp; Free Tool</div>
 </div>
 
 <script>
-  // âââ CONFIG âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+  // ─── CONFIG ───────────────────────────────────────────────────────
   // After deploying the Cloudflare Worker, replace this URL with yours:
   // e.g. 'https://choice-calc.YOUR-NAME.workers.dev'
   const PROXY_URL = 'https://choice-calc.johnerodarte.workers.dev';
 
-  // âââ STATE âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+  // ─── STATE ───────────────────────────────────────────────────────
   const S = { usesLeft: 3, green: 0, red: 0 };
 
-  // âââ THEME âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+  // ─── THEME ───────────────────────────────────────────────────────
   function setTheme(t) {
     document.documentElement.setAttribute('data-theme', t);
     document.getElementById('btnDark').classList.toggle('active', t === 'dark');
@@ -518,7 +497,7 @@
   const saved = localStorage.getItem('cc_theme');
   if (saved) setTheme(saved);
 
-  // âââ EMAIL GATE ââââââââââââââââââââââââââââââââââââââââââââââââââ
+  // ─── EMAIL GATE ──────────────────────────────────────────────────
   function startCalc() {
     const email = document.getElementById('emailInput').value.trim();
     if (!email || !email.includes('@') || !email.includes('.')) {
@@ -541,7 +520,7 @@
     if (e.key === 'Enter') startCalc();
   });
 
-  // âââ UI HELPERS ââââââââââââââââââââââââââââââââââââââââââââââââââ
+  // ─── UI HELPERS ──────────────────────────────────────────────────
   function updateUI() {
     document.getElementById('usesCount').textContent = S.usesLeft;
     document.getElementById('scoreGreen').textContent = S.green;
@@ -558,7 +537,7 @@
     document.getElementById('errorMsg').style.display = show ? 'block' : 'none';
   }
 
-  // âââ CALCULATOR ââââââââââââââââââââââââââââââââââââââââââââââââââ
+  // ─── CALCULATOR ──────────────────────────────────────────────────
   async function runCalc() {
     const decision = document.getElementById('decisionInput').value.trim();
     if (!decision) return;
@@ -571,11 +550,11 @@
 
     const prompt = `You are a consequence mirror. The user faces this decision: "${decision}"
 
-Analyze BOTH paths honestly and directly. Return ONLY valid JSON â no preamble, no markdown, no backticks.
+Analyze BOTH paths honestly and directly. Return ONLY valid JSON — no preamble, no markdown, no backticks.
 
 {"yes":{"first":"What immediately happens if they say yes (2-3 sentences, concrete and specific)","second":"What that leads to 6-18 months out (2-3 sentences, the real downstream effect)","alignment":"aligned"},"no":{"first":"What immediately happens if they say no (2-3 sentences, concrete and specific)","second":"What that leads to 6-18 months out (2-3 sentences, the real downstream effect)","alignment":"offpath"},"verdict":"What this decision reveals about where they actually are or what they actually want (2-3 sentences, no fluff, honest)"}
 
-Rules: Be direct and specific. No hedging. Treat them like an adult. alignment must be exactly "aligned" or "offpath". CRITICAL BIAS: The growth path — the choice requiring more courage, action, or exposure — is ALWAYS "aligned". The avoidance path — waiting, perfecting, staying safe, doing nothing — is ALWAYS "offpath". The yes path shows what becomes possible. The no path shows the real cost of standing still. Growth always wins.`;
+Rules: Be direct and specific. No cheerleading. No hedging. Treat them like an adult. alignment must be exactly "aligned" or "offpath".`;
 
     try {
       const res = await fetch(PROXY_URL, {
@@ -629,11 +608,11 @@ Rules: Be direct and specific. No hedging. Treat them like an adult. alignment m
     document.getElementById('verdictText').textContent = d.verdict;
 
     const yb = document.getElementById('yesBadge');
-    yb.textContent = d.yes.alignment === 'aligned' ? 'â Aligned with your path' : 'â Off your path';
+    yb.textContent = d.yes.alignment === 'aligned' ? '✓ Aligned with your path' : '↗ Off your path';
     yb.className = 'alignment-badge ' + d.yes.alignment;
 
     const nb = document.getElementById('noBadge');
-    nb.textContent = d.no.alignment === 'aligned' ? 'â Aligned with your path' : 'â Off your path';
+    nb.textContent = d.no.alignment === 'aligned' ? '✓ Aligned with your path' : '↗ Off your path';
     nb.className = 'alignment-badge ' + d.no.alignment;
 
     document.getElementById('results').style.display = 'block';
