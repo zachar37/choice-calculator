@@ -1,1179 +1,639 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Choice Calculator</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>The Choice Calculator — The Lost Letters Co.</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f0f0d;
-    --surface: #181815;
-    --border: #2a2a25;
-    --text: #e8e4dd;
-    --muted: #7a756a;
-    --accent: #c8a96e;
-    --green: #4a9e6a;
-    --red: #c24a3a;
-    --green-bg: #1a2e22;
-    --red-bg: #2e1a18;
-    --radius: 12px;
+    --gold: #c9a84c;
+    --gold-dim: rgba(201,168,76,0.15);
+    --gold-border: rgba(201,168,76,0.3);
+    --bg: #0d0d0d;
+    --bg2: #141414;
+    --surface: #1e1e1e;
+    --surface2: #252525;
+    --text: #f0ece3;
+    --text-dim: #9a9080;
+    --text-muted: #5a5248;
+    --green: #4caf78;
+    --green-dim: rgba(76,175,120,0.12);
+    --red: #c94c4c;
+    --red-dim: rgba(201,76,76,0.12);
+    --border: rgba(255,255,255,0.06);
+    --radius: 6px;
+    --t: 0.2s ease;
   }
-  :root.light {
-    --bg: #f5f2ec;
-    --surface: #ffffff;
-    --border: #ddd9d0;
-    --text: #1a1a16;
-    --muted: #888078;
-    --accent: #a07840;
-    --green: #2e7d4f;
-    --red: #a83424;
-    --green-bg: #edf7f1;
-    --red-bg: #fdf0ee;
+  [data-theme="light"] {
+    --bg: #f5f1e8;
+    --bg2: #ede9df;
+    --surface: #faf7f0;
+    --surface2: #f0ece3;
+    --text: #1a1714;
+    --text-dim: #5a5248;
+    --text-muted: #9a9080;
+    --border: rgba(0,0,0,0.08);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { margin:0; padding:0; box-sizing:border-box; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Syne', sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
-    transition: background .3s, color .3s;
+    transition: background var(--t), color var(--t);
   }
 
-  /* ── THEME TOGGLE ── */
+  /* THEME TOGGLE */
   .theme-toggle {
-    position: fixed;
-    top: 16px;
-    right: 16px;
-    z-index: 100;
-    display: flex;
-    gap: 4px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 4px;
+    position: fixed; top:18px; right:18px;
+    display:flex; gap:2px; z-index:100;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:4px; padding:3px;
   }
-  .theme-toggle button {
-    padding: 5px 12px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .06em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background: transparent;
-    color: var(--muted);
-    transition: all .2s;
+  .theme-btn {
+    font-family:'DM Mono',monospace; font-size:10px;
+    letter-spacing:0.08em; padding:5px 10px;
+    border:none; border-radius:3px; cursor:pointer;
+    background:transparent; color:var(--text-muted);
+    transition:all var(--t);
   }
-  .theme-toggle button.active {
-    background: var(--accent);
-    color: #fff;
+  .theme-btn.active { background:var(--gold); color:#0d0d0d; font-weight:500; }
+
+  /* HEADER */
+  .header { text-align:center; padding:60px 20px 0; }
+  .brand {
+    font-family:'DM Mono',monospace; font-size:10px;
+    letter-spacing:0.2em; color:var(--gold);
+    text-transform:uppercase; margin-bottom:20px; opacity:0.8;
+  }
+  .title {
+    font-size:clamp(32px,6vw,56px); font-weight:800;
+    line-height:1.05; letter-spacing:-0.02em;
+    color:var(--text); margin-bottom:16px;
+  }
+  .title span { color:var(--gold); }
+  .subtitle {
+    font-family:'DM Mono',monospace; font-size:13px;
+    color:var(--text-dim); font-weight:300;
+    letter-spacing:0.02em; max-width:460px;
+    margin:0 auto; line-height:1.7;
   }
 
-  /* ── SCREENS ── */
-  .screen { display: none; }
-  .screen.active { display: block; }
-
-  /* ── LANDING ── */
-  #screen-landing {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 24px 40px;
-    text-align: center;
-  }
-  #screen-landing.active { display: flex; }
-
-  .logo-mark {
-    width: 56px;
-    height: 56px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--green), #2a6e48);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 28px;
-    font-size: 24px;
-  }
-
-  .landing-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(32px, 6vw, 52px);
-    line-height: 1.1;
-    margin-bottom: 16px;
-    letter-spacing: -.02em;
-  }
-  .landing-title em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .landing-sub {
-    color: var(--muted);
-    font-size: 16px;
-    line-height: 1.6;
-    max-width: 400px;
-    margin: 0 auto 40px;
-  }
-
-  .email-form {
-    width: 100%;
-    max-width: 440px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .email-form input {
-    width: 100%;
-    padding: 15px 18px;
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    outline: none;
-    transition: border .2s;
-  }
-  .email-form input:focus { border-color: var(--accent); }
-  .email-form input::placeholder { color: var(--muted); }
-
-  .btn-primary {
-    width: 100%;
-    padding: 15px;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity .2s, transform .1s;
-    letter-spacing: .02em;
-  }
-  .btn-primary:hover { opacity: .9; }
-  .btn-primary:active { transform: scale(.98); }
-
-  .landing-note {
-    margin-top: 20px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  /* ── APP SHELL ── */
-  #screen-app {
-    min-height: 100vh;
-    padding: 60px 0 40px;
-  }
-  #screen-app.active { display: block; }
-
-  .app-header {
-    padding: 24px 24px 0;
-    max-width: 640px;
-    margin: 0 auto;
-  }
-
-  .app-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    letter-spacing: -.01em;
-    margin-bottom: 4px;
-  }
-
-  .app-sub {
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  /* ── SCORE COUNTER ── */
+  /* SCORE BAR */
   .score-bar {
-    display: flex;
-    gap: 12px;
-    padding: 20px 24px;
-    max-width: 640px;
-    margin: 0 auto;
+    display:flex; align-items:center; justify-content:center;
+    gap:24px; margin:36px auto 0; max-width:360px;
+  }
+  .score-pill {
+    display:flex; align-items:center; gap:10px;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:40px; padding:8px 20px;
+    font-family:'DM Mono',monospace; font-size:13px;
+  }
+  .score-pill.aligned { border-color:rgba(76,175,120,0.3); background:var(--green-dim); }
+  .score-pill.offpath { border-color:rgba(201,76,76,0.3); background:var(--red-dim); }
+  .score-dot { width:8px; height:8px; border-radius:50%; }
+  .score-dot.green { background:var(--green); }
+  .score-dot.red { background:var(--red); }
+  .score-label { color:var(--text-muted); font-size:10px; display:block; letter-spacing:0.1em; }
+  .score-num { font-size:22px; font-weight:500; }
+  .score-num.green { color:var(--green); }
+  .score-num.red { color:var(--red); }
+  .uses-left {
+    font-family:'DM Mono',monospace; font-size:10px;
+    color:var(--text-muted); letter-spacing:0.1em;
+    text-align:center; margin-top:10px;
+  }
+  .uses-left span { color:var(--gold); }
+
+  /* MAIN */
+  .container { max-width:720px; margin:0 auto; padding:40px 20px 80px; }
+
+  /* EMAIL GATE */
+  #emailGate {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); padding:48px 40px;
+    text-align:center; margin-top:48px;
+  }
+  .gate-icon { font-size:32px; margin-bottom:20px; }
+  .gate-title { font-size:22px; font-weight:700; margin-bottom:10px; }
+  .gate-sub {
+    font-family:'DM Mono',monospace; font-size:12px;
+    color:var(--text-dim); margin-bottom:28px;
+    line-height:1.7; letter-spacing:0.02em;
+  }
+  .email-row { display:flex; gap:10px; max-width:400px; margin:0 auto; }
+  .email-input {
+    flex:1; background:var(--bg); border:1px solid var(--border);
+    border-radius:var(--radius); padding:12px 16px;
+    font-family:'DM Mono',monospace; font-size:13px;
+    color:var(--text); outline:none; transition:border-color var(--t);
+  }
+  .email-input:focus { border-color:var(--gold-border); }
+  .email-input::placeholder { color:var(--text-muted); }
+  .btn-gold {
+    background:var(--gold); color:#0d0d0d; border:none;
+    border-radius:var(--radius); padding:12px 22px;
+    font-family:'Syne',sans-serif; font-size:13px;
+    font-weight:700; letter-spacing:0.04em; cursor:pointer;
+    white-space:nowrap; transition:opacity var(--t), transform var(--t);
+  }
+  .btn-gold:hover { opacity:0.88; transform:translateY(-1px); }
+  .privacy-note {
+    font-family:'DM Mono',monospace; font-size:10px;
+    color:var(--text-muted); margin-top:14px; letter-spacing:0.05em;
   }
 
-  .score-dot {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 18px;
-    border-radius: var(--radius);
-    border: 1.5px solid var(--border);
+  /* CALCULATOR */
+  #calculator { display:none; }
+  .input-label {
+    font-family:'DM Mono',monospace; font-size:10px;
+    letter-spacing:0.15em; color:var(--gold);
+    text-transform:uppercase; margin-bottom:10px; display:block;
   }
-  .score-dot.green { background: var(--green-bg); border-color: var(--green); }
-  .score-dot.red { background: var(--red-bg); border-color: var(--red); }
+  .decision-input {
+    width:100%; background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); padding:16px 20px;
+    font-family:'DM Mono',monospace; font-size:14px;
+    color:var(--text); resize:none; outline:none;
+    transition:border-color var(--t); min-height:80px; line-height:1.6;
+  }
+  .decision-input:focus { border-color:var(--gold-border); }
+  .decision-input::placeholder { color:var(--text-muted); }
+  .calc-btn {
+    width:100%; background:var(--gold); color:#0d0d0d; border:none;
+    border-radius:var(--radius); padding:15px;
+    font-family:'Syne',sans-serif; font-size:14px;
+    font-weight:700; letter-spacing:0.06em; cursor:pointer;
+    transition:opacity var(--t), transform var(--t);
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    margin-top:12px;
+  }
+  .calc-btn:hover { opacity:0.88; transform:translateY(-1px); }
+  .calc-btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+  .spinner {
+    width:16px; height:16px;
+    border:2px solid rgba(0,0,0,0.2); border-top-color:#0d0d0d;
+    border-radius:50%; animation:spin 0.7s linear infinite; display:none;
+  }
+  .spinner.on { display:block; }
+  @keyframes spin { to { transform:rotate(360deg); } }
 
-  .dot-circle {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: 700;
-    flex-shrink: 0;
-    transition: all .4s cubic-bezier(.34,1.56,.64,1);
+  /* RESULTS */
+  #results { margin-top:28px; display:none; }
+  .divider { height:1px; background:var(--border); margin:32px 0; }
+  .results-header {
+    font-family:'DM Mono',monospace; font-size:10px;
+    letter-spacing:0.15em; color:var(--text-muted);
+    text-transform:uppercase; margin-bottom:16px;
+    display:flex; align-items:center; gap:12px;
   }
-  .score-dot.green .dot-circle { background: var(--green); color: #fff; }
-  .score-dot.red .dot-circle { background: var(--red); color: #fff; }
-
-  .dot-label {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.3;
+  .results-header::after { content:''; flex:1; height:1px; background:var(--border); }
+  .decision-display {
+    font-family:'DM Mono',monospace; font-size:13px;
+    color:var(--text-dim); background:var(--surface);
+    border-left:3px solid var(--gold); padding:12px 16px;
+    border-radius:0 var(--radius) var(--radius) 0;
+    margin-bottom:20px; font-style:italic; line-height:1.6;
   }
-  .dot-label strong {
-    display: block;
-    font-size: 13px;
-    color: var(--text);
-    margin-bottom: 2px;
+  .path-grid {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:16px; margin-bottom:20px;
   }
-
-  /* ── CHOICE INPUT ── */
-  .choice-section {
-    padding: 0 24px;
-    max-width: 640px;
-    margin: 0 auto 24px;
+  @media(max-width:560px) { .path-grid { grid-template-columns:1fr; } }
+  .path-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); padding:20px; position:relative; overflow:hidden;
   }
-
-  .section-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-
-  .choice-textarea {
-    width: 100%;
-    min-height: 100px;
-    padding: 16px;
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    resize: none;
-    outline: none;
-    transition: border .2s;
-  }
-  .choice-textarea:focus { border-color: var(--accent); }
-  .choice-textarea::placeholder { color: var(--muted); }
-
-  .choice-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-  }
-
-  .btn-secondary {
-    flex: 1;
-    padding: 13px;
-    background: transparent;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: border .2s;
-  }
-  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
-
-  .btn-calculate {
-    flex: 2;
-    padding: 13px;
-    background: var(--accent);
-    border: none;
-    border-radius: var(--radius);
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity .2s;
-    letter-spacing: .02em;
-  }
-  .btn-calculate:hover { opacity: .9; }
-  .btn-calculate:disabled { opacity: .5; cursor: default; }
-
-  /* ── RESULT CARD ── */
-  .result-card {
-    margin: 0 24px 20px;
-    max-width: 592px;
-    margin-left: auto;
-    margin-right: auto;
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    animation: slideIn .3s ease;
-  }
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .result-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .result-header .choice-text {
-    font-size: 14px;
-    font-weight: 500;
-    flex: 1;
-    line-height: 1.4;
-  }
-  .result-badge {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    flex-shrink: 0;
-  }
-  .result-badge.green { background: var(--green); color: #fff; }
-  .result-badge.red { background: var(--red); color: #fff; }
-
-  .result-paths {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .path {
-    padding: 16px 18px;
-  }
-  .path:first-child { border-right: 1px solid var(--border); }
-
+  .path-card.yes { border-top:3px solid var(--green); }
+  .path-card.no  { border-top:3px solid var(--red); }
   .path-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    font-family:'DM Mono',monospace; font-size:10px;
+    letter-spacing:0.15em; text-transform:uppercase;
+    margin-bottom:12px; display:flex; align-items:center; gap:8px;
   }
-  .path-label.yes { color: var(--green); }
-  .path-label.no { color: var(--red); }
+  .path-label.yes { color:var(--green); }
+  .path-label.no  { color:var(--red); }
+  .consequence-block { margin-bottom:14px; }
+  .consequence-order {
+    font-family:'DM Mono',monospace; font-size:9px;
+    letter-spacing:0.15em; color:var(--text-muted);
+    text-transform:uppercase; margin-bottom:5px;
+  }
+  .consequence-text {
+    font-family:'DM Mono',monospace; font-size:12px;
+    color:var(--text-dim); line-height:1.65; font-weight:300;
+  }
+  .alignment-badge {
+    margin-top:14px; padding:6px 12px; border-radius:20px;
+    font-family:'DM Mono',monospace; font-size:10px;
+    letter-spacing:0.1em; display:inline-block;
+  }
+  .alignment-badge.aligned { background:var(--green-dim); color:var(--green); }
+  .alignment-badge.offpath  { background:var(--red-dim);   color:var(--red); }
+  .verdict-box {
+    background:var(--surface); border:1px solid var(--gold-border);
+    border-radius:var(--radius); padding:18px 20px; margin-bottom:20px;
+  }
+  .verdict-label {
+    font-family:'DM Mono',monospace; font-size:10px;
+    letter-spacing:0.15em; color:var(--gold);
+    text-transform:uppercase; margin-bottom:8px;
+  }
+  .verdict-text {
+    font-family:'DM Mono',monospace; font-size:13px;
+    color:var(--text-dim); line-height:1.7; font-weight:300;
+  }
+  .new-choice-btn {
+    width:100%; background:transparent; border:1px solid var(--border);
+    border-radius:var(--radius); padding:13px;
+    font-family:'Syne',sans-serif; font-size:13px;
+    font-weight:600; color:var(--text-dim); cursor:pointer;
+    letter-spacing:0.04em; transition:all var(--t);
+  }
+  .new-choice-btn:hover { border-color:var(--gold-border); color:var(--gold); }
 
-  .path-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+  /* PAYWALL */
+  #paywall { display:none; }
+  .paywall-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); overflow:hidden;
   }
-  .path-label.yes .path-dot { background: var(--green); }
-  .path-label.no .path-dot { background: var(--red); }
-
-  .consequence {
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--text);
-    margin-bottom: 10px;
-    padding-left: 14px;
-    border-left: 2px solid var(--border);
+  .marcus-dashboard {
+    padding:24px; position:relative;
+    filter:blur(3px); pointer-events:none;
+    user-select:none; border-bottom:1px solid var(--border);
   }
-  .consequence .order {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 3px;
+  .marcus-dashboard::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(to bottom,transparent 40%,var(--surface) 100%);
   }
-
-  /* loading state */
-  .loading-pulse {
-    display: flex;
-    gap: 5px;
-    padding: 20px;
-    justify-content: center;
+  .mock-header {
+    font-family:'DM Mono',monospace; font-size:10px;
+    letter-spacing:0.15em; color:var(--text-muted); margin-bottom:16px;
   }
-  .loading-pulse span {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--accent);
-    animation: pulse 1.2s infinite;
+  .mock-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:16px; }
+  .mock-stat { background:var(--surface2); border-radius:4px; padding:12px; text-align:center; }
+  .mock-stat-num { font-size:24px; font-weight:700; color:var(--text); margin-bottom:4px; }
+  .mock-stat-label {
+    font-family:'DM Mono',monospace; font-size:9px;
+    color:var(--text-muted); letter-spacing:0.1em;
   }
-  .loading-pulse span:nth-child(2) { animation-delay: .2s; }
-  .loading-pulse span:nth-child(3) { animation-delay: .4s; }
-  @keyframes pulse {
-    0%, 80%, 100% { transform: scale(.6); opacity: .4; }
-    40% { transform: scale(1); opacity: 1; }
+  .mock-row { height:8px; background:var(--surface2); border-radius:4px; margin-bottom:8px; }
+  .mock-row.w80 { width:80%; }
+  .mock-row.w60 { width:60%; }
+  .mock-row.w90 { width:90%; }
+  .lock-overlay { position:relative; padding:36px 32px; text-align:center; }
+  .lock-icon { font-size:28px; margin-bottom:14px; }
+  .lock-title { font-size:20px; font-weight:800; margin-bottom:8px; line-height:1.2; }
+  .lock-title span { color:var(--gold); }
+  .lock-sub {
+    font-family:'DM Mono',monospace; font-size:12px;
+    color:var(--text-dim); margin-bottom:24px;
+    line-height:1.7; font-weight:300;
+    max-width:360px; margin-left:auto; margin-right:auto;
   }
-
-  /* ── HISTORY ── */
-  .history-section {
-    padding: 0 24px;
-    max-width: 640px;
-    margin: 0 auto 24px;
+  .price-tag { font-size:32px; font-weight:800; color:var(--gold); margin-bottom:4px; }
+  .price-sub {
+    font-family:'DM Mono',monospace; font-size:10px;
+    color:var(--text-muted); letter-spacing:0.1em; margin-bottom:20px;
   }
-
-  .history-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  .subscribe-btn {
+    background:var(--gold); color:#0d0d0d; border:none;
+    border-radius:var(--radius); padding:14px 36px;
+    font-family:'Syne',sans-serif; font-size:14px;
+    font-weight:700; letter-spacing:0.04em; cursor:pointer;
+    display:inline-block; transition:opacity var(--t); margin-bottom:12px;
   }
-
-  .history-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  .history-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  /* ── MOCKUP TEASE ── */
-  #screen-tease {
-    min-height: 100vh;
-    padding: 60px 24px 40px;
-    max-width: 640px;
-    margin: 0 auto;
-  }
-  #screen-tease.active { display: block; }
-
-  .tease-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
+  .subscribe-btn:hover { opacity:0.88; }
+  .lock-perks {
+    font-family:'DM Mono',monospace; font-size:10px;
+    color:var(--text-muted); letter-spacing:0.05em; line-height:2;
   }
 
-  .tease-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(26px, 5vw, 40px);
-    line-height: 1.15;
-    margin-bottom: 12px;
+  /* ERROR */
+  .error-msg {
+    font-family:'DM Mono',monospace; font-size:12px;
+    color:var(--red); text-align:center;
+    padding:10px; display:none;
   }
 
-  .tease-sub {
-    font-size: 15px;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 32px;
+  /* FOOTER */
+  .footer { text-align:center; padding:0 20px 40px; }
+  .footer-brand {
+    font-family:'DM Mono',monospace; font-size:10px;
+    letter-spacing:0.15em; color:var(--text-muted); text-transform:uppercase;
   }
-
-  /* mockup dashboard */
-  .mockup-dashboard {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 28px;
-    position: relative;
-  }
-
-  .mockup-header {
-    padding: 18px 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .mockup-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 18px;
-  }
-
-  .mockup-date {
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .mockup-scores {
-    display: flex;
-    gap: 10px;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .mockup-score-box {
-    flex: 1;
-    padding: 14px;
-    border-radius: 10px;
-    text-align: center;
-  }
-  .mockup-score-box.green { background: var(--green-bg); border: 1px solid var(--green); }
-  .mockup-score-box.red { background: var(--red-bg); border: 1px solid var(--red); }
-
-  .mockup-score-num {
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .mockup-score-box.green .mockup-score-num { color: var(--green); }
-  .mockup-score-box.red .mockup-score-num { color: var(--red); }
-
-  .mockup-score-lbl {
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 600;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-  }
-
-  .mockup-arc {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .arc-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 12px;
-  }
-
-  .arc-bars {
-    display: flex;
-    align-items: flex-end;
-    gap: 4px;
-    height: 60px;
-  }
-
-  .arc-bar {
-    flex: 1;
-    border-radius: 4px 4px 0 0;
-    transition: height .5s ease;
-  }
-
-  .mockup-insight {
-    padding: 14px 20px;
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-    font-style: italic;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* lock overlay */
-  .mockup-lock {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent 30%, var(--bg) 70%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    padding-bottom: 28px;
-  }
-
-  .lock-icon {
-    font-size: 28px;
-    margin-bottom: 10px;
-  }
-
-  .lock-text {
-    font-size: 13px;
-    color: var(--muted);
-    text-align: center;
-    line-height: 1.5;
-    max-width: 240px;
-  }
-
-  .tease-cta {
-    background: var(--green);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    width: 100%;
-    padding: 16px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 12px;
-    transition: opacity .2s;
-    letter-spacing: .02em;
-  }
-  .tease-cta:hover { opacity: .9; }
-
-  .tease-back {
-    width: 100%;
-    padding: 13px;
-    background: transparent;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    cursor: pointer;
-    transition: border .2s;
-  }
-  .tease-back:hover { border-color: var(--muted); }
-
-  /* ── SUBSCRIBE MODAL ── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.7);
-    backdrop-filter: blur(4px);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-  .modal-overlay.open { display: flex; }
-
-  .modal {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: 20px;
-    padding: 32px 28px;
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
-  }
-
-  .modal-emoji { font-size: 40px; margin-bottom: 16px; }
-
-  .modal-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 26px;
-    margin-bottom: 10px;
-    line-height: 1.2;
-  }
-
-  .modal-sub {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 24px;
-  }
-
-  .modal-price {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    margin-bottom: 20px;
-  }
-
-  .price-num {
-    font-family: 'DM Serif Display', serif;
-    font-size: 36px;
-    color: var(--accent);
-  }
-  .price-per {
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  .modal-features {
-    list-style: none;
-    text-align: left;
-    margin-bottom: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .modal-features li {
-    font-size: 13px;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .modal-features li::before {
-    content: '✓';
-    color: var(--green);
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .modal-btn {
-    width: 100%;
-    padding: 15px;
-    background: var(--green);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 10px;
-    transition: opacity .2s;
-  }
-  .modal-btn:hover { opacity: .9; }
-
-  .modal-close {
-    width: 100%;
-    padding: 12px;
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    cursor: pointer;
-  }
-
-  /* ── USAGE COUNTER ── */
-  .usage-bar {
-    padding: 0 24px;
-    max-width: 640px;
-    margin: 0 auto 16px;
-  }
-
-  .usage-track {
-    background: var(--border);
-    border-radius: 4px;
-    height: 3px;
-    overflow: hidden;
-  }
-
-  .usage-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 4px;
-    transition: width .4s ease;
-  }
-
-  .usage-text {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 6px;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  /* responsive */
-  @media (max-width: 480px) {
-    .result-paths { grid-template-columns: 1fr; }
-    .path:first-child { border-right: none; border-bottom: 1px solid var(--border); }
-  }
+  .footer-brand span { color:var(--gold); }
 </style>
 </head>
 <body>
 
-<!-- THEME TOGGLE -->
 <div class="theme-toggle">
-  <button id="btn-dark" class="active" onclick="setTheme('dark')">DARK</button>
-  <button id="btn-light" onclick="setTheme('light')">LIGHT</button>
+  <button class="theme-btn active" id="btnDark" onclick="setTheme('dark')">DARK</button>
+  <button class="theme-btn" id="btnLight" onclick="setTheme('light')">LIGHT</button>
 </div>
 
-<!-- SCREEN 1: LANDING / EMAIL CAPTURE -->
-<div id="screen-landing" class="screen active">
-  <div class="logo-mark">⚖️</div>
-  <h1 class="landing-title">The <em>Choice</em><br>Calculator</h1>
-  <p class="landing-sub">Enter any decision. See exactly where each path leads — first consequence, second consequence, ripple effect. Free. No coaching. Just clarity.</p>
+<div class="header">
+  <div class="brand">The Lost Letters Co. — Free Tool</div>
+  <h1 class="title">The Choice<br><span>Calculator</span></h1>
+  <p class="subtitle">You don't have a decision problem.<br>You have a visibility problem.</p>
 
-  <div class="email-form">
-    <input type="email" id="email-input" placeholder="Enter your email to start" autocomplete="email">
-    <button class="btn-primary" onclick="startApp()">Calculate My First Choice →</button>
-  </div>
-  <p class="landing-note">Free to use. We'll save your choices so you can track your pattern over time.</p>
-</div>
-
-<!-- SCREEN 2: APP -->
-<div id="screen-app" class="screen">
-  <div class="app-header">
-    <div class="app-title">Choice Calculator</div>
-    <div class="app-sub" id="user-email-display"></div>
-  </div>
-
-  <!-- SCORE COUNTER -->
-  <div class="score-bar">
-    <div class="score-dot green">
-      <div class="dot-circle" id="green-count">0</div>
-      <div class="dot-label">
-        <strong>Aligned</strong>
-        choices this month
+  <div class="score-bar" id="scoreBar" style="display:none">
+    <div class="score-pill aligned">
+      <div class="score-dot green"></div>
+      <div>
+        <span class="score-label">ALIGNED</span>
+        <span class="score-num green" id="scoreGreen">0</span>
       </div>
     </div>
-    <div class="score-dot red">
-      <div class="dot-circle" id="red-count">0</div>
-      <div class="dot-label">
-        <strong>Off-path</strong>
-        choices this month
+    <div class="score-pill offpath">
+      <div class="score-dot red"></div>
+      <div>
+        <span class="score-label">OFF-PATH</span>
+        <span class="score-num red" id="scoreRed">0</span>
       </div>
     </div>
   </div>
-
-  <!-- USAGE BAR -->
-  <div class="usage-bar">
-    <div class="usage-track">
-      <div class="usage-fill" id="usage-fill" style="width:0%"></div>
-    </div>
-    <div class="usage-text">
-      <span id="usage-label">0 of 3 free choices used</span>
-      <span style="color:var(--accent);cursor:pointer" onclick="showTease()">See your full dashboard →</span>
-    </div>
-  </div>
-
-  <!-- CHOICE INPUT -->
-  <div class="choice-section">
-    <div class="section-label">Enter your decision</div>
-    <textarea class="choice-textarea" id="choice-input" placeholder="e.g. Should I quit my job and freelance? Should I text her back? Should I skip the gym today?"></textarea>
-    <div class="choice-actions">
-      <button class="btn-secondary" onclick="clearChoice()">Clear</button>
-      <button class="btn-calculate" id="calc-btn" onclick="calculateChoice()">Calculate →</button>
-    </div>
-  </div>
-
-  <!-- RESULTS AREA -->
-  <div id="results-area"></div>
-
-  <!-- HISTORY -->
-  <div class="history-section" id="history-section" style="display:none">
-    <div class="section-label">This month's choices</div>
-    <div class="history-list" id="history-list"></div>
+  <div class="uses-left" id="usesLeft" style="display:none">
+    <span id="usesCount">3</span> FREE USES REMAINING
   </div>
 </div>
 
-<!-- SCREEN 3: MOCKUP TEASE -->
-<div id="screen-tease" class="screen">
-  <div class="tease-label">Your Dashboard Preview</div>
-  <h2 class="tease-title">This is what Marcus's last 30 days looked like.</h2>
-  <p class="tease-sub">Want to see yours? Every choice you make gets tracked, scored, and revealed in your personal dashboard.</p>
+<div class="container">
 
-  <!-- MOCKUP DASHBOARD -->
-  <div class="mockup-dashboard">
-    <div class="mockup-header">
-      <div class="mockup-name">Marcus</div>
-      <div class="mockup-date">April 2026 · 30 days</div>
+  <!-- EMAIL GATE -->
+  <div id="emailGate">
+    <div class="gate-icon">📬</div>
+    <div class="gate-title">See your decisions clearly.</div>
+    <p class="gate-sub">Enter any real decision. Get first and second order consequences<br>for both paths — before you choose.</p>
+    <div class="email-row">
+      <input type="email" class="email-input" id="emailInput" placeholder="your@email.com" />
+      <button class="btn-gold" onclick="startCalc()">Start Free →</button>
     </div>
+    <p class="privacy-note">No spam. No pitch. Just clarity. — The Lost Letters Co.</p>
+  </div>
 
-    <div class="mockup-scores">
-      <div class="mockup-score-box green">
-        <div class="mockup-score-num">18</div>
-        <div class="mockup-score-lbl">● Aligned</div>
+  <!-- CALCULATOR -->
+  <div id="calculator">
+    <span class="input-label">Your Decision</span>
+    <textarea class="decision-input" id="decisionInput"
+      placeholder="Type your real decision here. Be specific — the more honest you are, the more useful this gets.&#10;&#10;Example: Should I leave my job to build my business full-time?"></textarea>
+    <button class="calc-btn" id="calcBtn" onclick="runCalc()">
+      <div class="spinner" id="spinner"></div>
+      <span id="calcBtnText">SHOW ME BOTH PATHS</span>
+    </button>
+    <div class="error-msg" id="errorMsg">Something went wrong. Check your connection and try again.</div>
+
+    <div id="results">
+      <div class="divider"></div>
+      <div class="results-header">Consequence Mirror</div>
+      <div class="decision-display" id="decisionDisplay"></div>
+      <div class="path-grid">
+        <div class="path-card yes">
+          <div class="path-label yes">✓ If You Say Yes</div>
+          <div class="consequence-block">
+            <div class="consequence-order">1st Order — What happens next</div>
+            <div class="consequence-text" id="yes1"></div>
+          </div>
+          <div class="consequence-block">
+            <div class="consequence-order">2nd Order — What that leads to</div>
+            <div class="consequence-text" id="yes2"></div>
+          </div>
+          <div class="alignment-badge" id="yesBadge"></div>
+        </div>
+        <div class="path-card no">
+          <div class="path-label no">✗ If You Say No</div>
+          <div class="consequence-block">
+            <div class="consequence-order">1st Order — What happens next</div>
+            <div class="consequence-text" id="no1"></div>
+          </div>
+          <div class="consequence-block">
+            <div class="consequence-order">2nd Order — What that leads to</div>
+            <div class="consequence-text" id="no2"></div>
+          </div>
+          <div class="alignment-badge" id="noBadge"></div>
+        </div>
       </div>
-      <div class="mockup-score-box red">
-        <div class="mockup-score-num">9</div>
-        <div class="mockup-score-lbl">● Off-path</div>
+      <div class="verdict-box">
+        <div class="verdict-label">What Your Choices Are Showing</div>
+        <div class="verdict-text" id="verdictText"></div>
       </div>
-    </div>
-
-    <div class="mockup-arc">
-      <div class="arc-label">30-day arc</div>
-      <div class="arc-bars" id="arc-bars"></div>
-    </div>
-
-    <div class="mockup-insight">
-      "Marcus's choices in week 3 reveal a pattern: he consistently chooses short-term comfort over long-term positioning. His real goal isn't rest — it's permission to want more…"
-    </div>
-
-    <!-- LOCK OVERLAY -->
-    <div class="mockup-lock">
-      <div class="lock-icon">🔒</div>
-      <div class="lock-text">This is Marcus's. Subscribe to unlock yours.</div>
+      <button class="new-choice-btn" onclick="newChoice()">↺ &nbsp;Enter Another Decision</button>
     </div>
   </div>
 
-  <button class="tease-cta" onclick="openModal()">Unlock My Dashboard — $9/mo</button>
-  <button class="tease-back" onclick="showApp()">← Keep using the free calculator</button>
+  <!-- PAYWALL -->
+  <div id="paywall">
+    <div class="paywall-card">
+      <div class="marcus-dashboard">
+        <div class="mock-header">MARCUS'S DECISION DASHBOARD — MONTH 7</div>
+        <div class="mock-grid">
+          <div class="mock-stat">
+            <div class="mock-stat-num" style="color:var(--green)">14</div>
+            <div class="mock-stat-label">ALIGNED</div>
+          </div>
+          <div class="mock-stat">
+            <div class="mock-stat-num" style="color:var(--red)">6</div>
+            <div class="mock-stat-label">OFF-PATH</div>
+          </div>
+          <div class="mock-stat">
+            <div class="mock-stat-num" style="color:var(--gold)">70%</div>
+            <div class="mock-stat-label">ALIGNMENT</div>
+          </div>
+        </div>
+        <div class="mock-row w80"></div>
+        <div class="mock-row w60"></div>
+        <div class="mock-row w90"></div>
+        <div class="mock-row w80"></div>
+      </div>
+      <div class="lock-overlay">
+        <div class="lock-icon">🔒</div>
+        <div class="lock-title">This is <span>Marcus's</span> dashboard.<br>Subscribe to unlock yours.</div>
+        <p class="lock-sub">
+          Marcus can see his pattern. Which choices keep pulling him off course.
+          What his decisions are revealing about what he actually wants.<br><br>
+          Your dashboard tracks everything — and tells you what it means.
+        </p>
+        <div class="price-tag">$9<span style="font-size:18px;opacity:0.7">/mo</span></div>
+        <div class="price-sub">FULL DASHBOARD + PATTERN RECOGNITION + QUARTERLY ARC</div>
+        <br>
+        <button class="subscribe-btn" onclick="alert('Subscription coming soon. Follow @thelostlettersco on Instagram for the launch.')">
+          Unlock My Dashboard →
+        </button>
+        <div class="lock-perks">
+          ✓ Unlimited decisions &nbsp;·&nbsp; ✓ Pattern recognition &nbsp;·&nbsp; ✓ Quarterly arc report<br>
+          ✓ Decision history &nbsp;·&nbsp; ✓ Goal detection over time
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<!-- SUBSCRIBE MODAL -->
-<div class="modal-overlay" id="subscribe-modal">
-  <div class="modal">
-    <div class="modal-emoji">📊</div>
-    <h3 class="modal-title">Unlock Your Dashboard</h3>
-    <p class="modal-sub">You've been making choices. Time to see what they're building toward.</p>
-
-    <div class="modal-price">
-      <div class="price-num">$9</div>
-      <div class="price-per">per month · cancel anytime</div>
-    </div>
-
-    <ul class="modal-features">
-      <li>Full 30-day choice history & arc</li>
-      <li>3-day, monthly & quarterly views</li>
-      <li>Pattern recognition — what your choices reveal</li>
-      <li>Third-order consequence depth</li>
-      <li>Monthly Meridian Review narrative</li>
-    </ul>
-
-    <button class="modal-btn" onclick="closeModal()">Start My Dashboard →</button>
-    <button class="modal-close" onclick="closeModal()">Not yet</button>
-  </div>
+<div class="footer">
+  <div class="footer-brand">The Lost Letters Co. &nbsp;·&nbsp; <span>The Choice Calculator</span> &nbsp;·&nbsp; Free Tool</div>
 </div>
 
 <script>
-// ── STATE ──
-const STATE = {
-  email: '',
-  choices: JSON.parse(localStorage.getItem('cc_choices') || '[]'),
-  greenCount: parseInt(localStorage.getItem('cc_green') || '0'),
-  redCount: parseInt(localStorage.getItem('cc_red') || '0'),
-  usageCount: parseInt(localStorage.getItem('cc_usage') || '0'),
-  FREE_LIMIT: 3
-};
+  // ─── CONFIG ───────────────────────────────────────────────────────
+  // After deploying the Cloudflare Worker, replace this URL with yours:
+  // e.g. 'https://choice-calc.YOUR-NAME.workers.dev'
+  const PROXY_URL = 'https://choice-calc.johnerodarte.workers.dev';
 
-// ── THEME ──
-function setTheme(t) {
-  document.documentElement.classList.toggle('light', t === 'light');
-  document.getElementById('btn-dark').classList.toggle('active', t === 'dark');
-  document.getElementById('btn-light').classList.toggle('active', t === 'light');
-  localStorage.setItem('cc_theme', t);
-}
-(function() {
-  const saved = localStorage.getItem('cc_theme') || 'dark';
-  setTheme(saved);
-})();
+  // ─── STATE ───────────────────────────────────────────────────────
+  const S = { usesLeft: 3, green: 0, red: 0 };
 
-// ── SCREENS ──
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function showApp() { showScreen('screen-app'); updateUI(); }
-function showTease() { buildArcBars(); showScreen('screen-tease'); }
-
-// ── START ──
-function startApp() {
-  const email = document.getElementById('email-input').value.trim();
-  if (!email || !email.includes('@')) {
-    document.getElementById('email-input').style.borderColor = 'var(--red)';
-    setTimeout(() => document.getElementById('email-input').style.borderColor = '', 1500);
-    return;
+  // ─── THEME ───────────────────────────────────────────────────────
+  function setTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    document.getElementById('btnDark').classList.toggle('active', t === 'dark');
+    document.getElementById('btnLight').classList.toggle('active', t === 'light');
+    localStorage.setItem('cc_theme', t);
   }
-  STATE.email = email;
-  localStorage.setItem('cc_email', email);
-  document.getElementById('user-email-display').textContent = email;
-  showApp();
-}
+  const saved = localStorage.getItem('cc_theme');
+  if (saved) setTheme(saved);
 
-// ── UI UPDATE ──
-function updateUI() {
-  document.getElementById('green-count').textContent = STATE.greenCount;
-  document.getElementById('red-count').textContent = STATE.redCount;
+  // ─── EMAIL GATE ──────────────────────────────────────────────────
+  function startCalc() {
+    const email = document.getElementById('emailInput').value.trim();
+    if (!email || !email.includes('@') || !email.includes('.')) {
+      const inp = document.getElementById('emailInput');
+      inp.style.borderColor = 'var(--red)';
+      setTimeout(() => inp.style.borderColor = '', 1400);
+      return;
+    }
+    // In production: POST email to your list (Klaviyo, ConvertKit, etc.)
+    console.log('[Choice Calc] Email captured:', email);
 
-  const pct = Math.min((STATE.usageCount / STATE.FREE_LIMIT) * 100, 100);
-  document.getElementById('usage-fill').style.width = pct + '%';
-
-  const remaining = Math.max(STATE.FREE_LIMIT - STATE.usageCount, 0);
-  document.getElementById('usage-label').textContent =
-    remaining > 0
-      ? `${STATE.usageCount} of ${STATE.FREE_LIMIT} free choices used`
-      : 'Free limit reached — subscribe for unlimited';
-
-  renderHistory();
-}
-
-// ── CALCULATE ──
-async function calculateChoice() {
-  const choice = document.getElementById('choice-input').value.trim();
-  if (!choice) return;
-
-  if (STATE.usageCount >= STATE.FREE_LIMIT) {
-    showTease();
-    return;
-  }
-
-  const btn = document.getElementById('calc-btn');
-  btn.disabled = true;
-  btn.textContent = 'Calculating…';
-
-  const resultsArea = document.getElementById('results-area');
-
-  // Show loading
-  resultsArea.innerHTML = `<div style="padding:0 24px;max-width:640px;margin:0 auto">
-    <div class="result-card">
-      <div class="loading-pulse"><span></span><span></span><span></span></div>
-    </div>
-  </div>`;
-
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { "Content-Type": "application/json", "x-api-key": "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", "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: `You are a consequence calculator. Your only job is to show what follows from a choice — not to judge it, coach toward an outcome, or recommend anything. You extend the user's visibility horizon.
-
-For any decision given, analyze BOTH paths (yes/do it, and no/don't do it).
-
-For each path provide:
-- First order consequence: the immediate, direct result (1-2 sentences)
-- Second order consequence: what that first consequence leads to 2-4 weeks later (1-2 sentences)
-
-Also determine if this choice, on balance, tends toward alignment (moving toward something meaningful) or off-path (moving away from it). Return "green" or "red" for the alignment field.
-
-Respond ONLY in this exact JSON format with no markdown or extra text:
-{
-  "yes_first": "...",
-  "yes_second": "...",
-  "no_first": "...",
-  "no_second": "...",
-  "alignment": "green" or "red",
-  "choice_summary": "brief 4-6 word label for this choice"
-}`,
-        messages: [{ role: 'user', content: `Decision: ${choice}` }]
-      })
-    });
-
-    const data = await response.json();
-    const text = data.content.map(i => i.text || '').join('');
-    const clean = text.replace(/```json|```/g, '').trim();
-    const result = JSON.parse(clean);
-
-    // Update state
-    STATE.usageCount++;
-    if (result.alignment === 'green') STATE.greenCount++;
-    else STATE.redCount++;
-
-    const choiceRecord = {
-      text: result.choice_summary,
-      alignment: result.alignment,
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    };
-    STATE.choices.unshift(choiceRecord);
-
-    localStorage.setItem('cc_usage', STATE.usageCount);
-    localStorage.setItem('cc_green', STATE.greenCount);
-    localStorage.setItem('cc_red', STATE.redCount);
-    localStorage.setItem('cc_choices', JSON.stringify(STATE.choices.slice(0, 20)));
-
-    // Animate score dot
-    const dotId = result.alignment === 'green' ? 'green-count' : 'red-count';
-    const dot = document.getElementById(dotId);
-    dot.style.transform = 'scale(1.3)';
-    setTimeout(() => dot.style.transform = '', 400);
-
+    document.getElementById('emailGate').style.display = 'none';
+    document.getElementById('calculator').style.display = 'block';
+    document.getElementById('scoreBar').style.display = 'flex';
+    document.getElementById('usesLeft').style.display = 'block';
     updateUI();
+  }
 
-    // Render result
-    resultsArea.innerHTML = `
-      <div style="padding:0 24px;max-width:640px;margin:0 auto 20px">
-        <div class="result-card">
-          <div class="result-header">
-            <div class="result-badge ${result.alignment}">${result.alignment === 'green' ? '✓' : '→'}</div>
-            <div class="choice-text">${choice.length > 80 ? choice.substring(0, 80) + '…' : choice}</div>
-          </div>
-          <div class="result-paths">
-            <div class="path">
-              <div class="path-label yes"><div class="path-dot"></div>If you do it</div>
-              <div class="consequence">
-                <div class="order">First</div>
-                ${result.yes_first}
-              </div>
-              <div class="consequence">
-                <div class="order">Second</div>
-                ${result.yes_second}
-              </div>
-            </div>
-            <div class="path">
-              <div class="path-label no"><div class="path-dot"></div>If you don't</div>
-              <div class="consequence">
-                <div class="order">First</div>
-                ${result.no_first}
-              </div>
-              <div class="consequence">
-                <div class="order">Second</div>
-                ${result.no_second}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>`;
+  document.getElementById('emailInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') startCalc();
+  });
 
-    // After hitting limit, show tease prompt
-    if (STATE.usageCount >= STATE.FREE_LIMIT) {
-      setTimeout(() => showTease(), 2200);
+  // ─── UI HELPERS ──────────────────────────────────────────────────
+  function updateUI() {
+    document.getElementById('usesCount').textContent = S.usesLeft;
+    document.getElementById('scoreGreen').textContent = S.green;
+    document.getElementById('scoreRed').textContent = S.red;
+  }
+
+  function setLoading(on) {
+    document.getElementById('calcBtn').disabled = on;
+    document.getElementById('spinner').className = on ? 'spinner on' : 'spinner';
+    document.getElementById('calcBtnText').textContent = on ? 'READING YOUR PATHS...' : 'SHOW ME BOTH PATHS';
+  }
+
+  function showError(show) {
+    document.getElementById('errorMsg').style.display = show ? 'block' : 'none';
+  }
+
+  // ─── CALCULATOR ──────────────────────────────────────────────────
+  async function runCalc() {
+    const decision = document.getElementById('decisionInput').value.trim();
+    if (!decision) return;
+
+    if (S.usesLeft <= 0) { showPaywall(); return; }
+
+    setLoading(true);
+    showError(false);
+    document.getElementById('results').style.display = 'none';
+
+    const prompt = `You are a consequence mirror. The user faces this decision: "${decision}"
+
+Analyze BOTH paths honestly and directly. Return ONLY valid JSON — no preamble, no markdown, no backticks.
+
+{"yes":{"first":"What immediately happens if they say yes (2-3 sentences, concrete and specific)","second":"What that leads to 6-18 months out (2-3 sentences, the real downstream effect)","alignment":"aligned"},"no":{"first":"What immediately happens if they say no (2-3 sentences, concrete and specific)","second":"What that leads to 6-18 months out (2-3 sentences, the real downstream effect)","alignment":"offpath"},"verdict":"What this decision reveals about where they actually are or what they actually want (2-3 sentences, no fluff, honest)"}
+
+Rules: Be direct and specific. No cheerleading. No hedging. Treat them like an adult. alignment must be exactly "aligned" or "offpath".`;
+
+    try {
+      const res = await fetch(PROXY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 800,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+
+      if (!res.ok) throw new Error('Network response was not ok');
+
+      const data = await res.json();
+
+      if (data.error) throw new Error(data.error.message || 'API error');
+
+      const raw = data.content.map(b => b.text || '').join('');
+      const clean = raw.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(clean);
+
+      // Validate all required fields
+      if (!parsed.yes?.first || !parsed.yes?.second || !parsed.no?.first || !parsed.no?.second || !parsed.verdict) {
+        throw new Error('Incomplete response');
+      }
+
+      renderResults(decision, parsed);
+
+      S.usesLeft--;
+      if (parsed.yes.alignment === 'aligned') S.green++;
+      else S.red++;
+      updateUI();
+
+      if (S.usesLeft <= 0) setTimeout(showPaywall, 1200);
+
+    } catch (e) {
+      console.error('[Choice Calc] Error:', e);
+      showError(true);
     }
 
-  } catch (err) {
-    resultsArea.innerHTML = `<div style="padding:0 24px;max-width:640px;margin:0 auto;color:var(--muted);font-size:14px">Something went wrong. Try again.</div>`;
+    setLoading(false);
   }
 
-  btn.disabled = false;
-  btn.textContent = 'Calculate →';
-  document.getElementById('choice-input').value = '';
-}
+  function renderResults(decision, d) {
+    document.getElementById('decisionDisplay').textContent = '"' + decision + '"';
+    document.getElementById('yes1').textContent = d.yes.first;
+    document.getElementById('yes2').textContent = d.yes.second;
+    document.getElementById('no1').textContent = d.no.first;
+    document.getElementById('no2').textContent = d.no.second;
+    document.getElementById('verdictText').textContent = d.verdict;
 
-function clearChoice() {
-  document.getElementById('choice-input').value = '';
-  document.getElementById('results-area').innerHTML = '';
-}
+    const yb = document.getElementById('yesBadge');
+    yb.textContent = d.yes.alignment === 'aligned' ? '✓ Aligned with your path' : '↗ Off your path';
+    yb.className = 'alignment-badge ' + d.yes.alignment;
 
-// ── HISTORY ──
-function renderHistory() {
-  const section = document.getElementById('history-section');
-  const list = document.getElementById('history-list');
+    const nb = document.getElementById('noBadge');
+    nb.textContent = d.no.alignment === 'aligned' ? '✓ Aligned with your path' : '↗ Off your path';
+    nb.className = 'alignment-badge ' + d.no.alignment;
 
-  if (STATE.choices.length === 0) { section.style.display = 'none'; return; }
-  section.style.display = 'block';
-
-  list.innerHTML = STATE.choices.slice(0, 5).map(c => `
-    <div class="history-item">
-      <div class="history-dot" style="background:var(--${c.alignment})"></div>
-      <span style="flex:1;color:var(--text)">${c.text}</span>
-      <span style="font-size:11px">${c.date}</span>
-    </div>
-  `).join('');
-}
-
-// ── ARC BARS ──
-function buildArcBars() {
-  const bars = document.getElementById('arc-bars');
-  const mockData = [30,45,20,60,75,40,55,80,65,90,70,85,60,95,75,
-                    80,70,85,90,75,80,95,85,90,88,92,85,90,95,88];
-  bars.innerHTML = mockData.map((h, i) => {
-    const isGreen = h > 55;
-    return `<div class="arc-bar" style="height:${h}%;background:${isGreen ? 'var(--green)' : 'var(--red)'};opacity:${0.5 + (i/mockData.length)*0.5}"></div>`;
-  }).join('');
-}
-
-// ── MODAL ──
-function openModal() { document.getElementById('subscribe-modal').classList.add('open'); }
-function closeModal() { document.getElementById('subscribe-modal').classList.remove('open'); }
-
-// close on overlay click
-document.getElementById('subscribe-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-
-// Check if returning user
-(function() {
-  const savedEmail = localStorage.getItem('cc_email');
-  if (savedEmail) {
-    STATE.email = savedEmail;
-    document.getElementById('user-email-display').textContent = savedEmail;
-    showApp();
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-})();
+
+  function newChoice() {
+    document.getElementById('decisionInput').value = '';
+    document.getElementById('results').style.display = 'none';
+    showError(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('decisionInput').focus();
+  }
+
+  function showPaywall() {
+    document.getElementById('calculator').style.display = 'none';
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('paywall').style.display = 'block';
+    document.getElementById('usesLeft').style.display = 'none';
+    document.getElementById('paywall').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 </script>
 </body>
 </html>
