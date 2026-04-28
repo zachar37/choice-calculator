@@ -216,35 +216,22 @@
 </div>
 <div class="status-bar">
   <div class="status-msg" id="statusMsg">Ready. Enter a mission and deploy.</div>
-  <div>PMM v1.2</div>
+  <div>PMM v1.3</div>
 </div>
 <script>
   const state = { mission: '', prompts: {}, responses: {}, synthesis: '' };
-  const BRIDGE = 'http://localhost:3747';
+  const PROXY = 'https://pmm-proxy-264350494748.us-central1.run.app';
 
-  // Route all Claude API calls through local bridge, which proxies to Anthropic
   async function claudeCall(prompt) {
-    // Try bridge first (works when running locally or via task bridge)
-    try {
-      const r = await fetch(BRIDGE + '/api', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt, model: 'claude-sonnet-4-20250514', max_tokens: 1000 })
-      });
-      if (!r.ok) throw new Error('Bridge returned ' + r.status);
-      const d = await r.json();
-      return d.content || d.text || d.response || (d.content && d.content[0] && d.content[0].text) || JSON.stringify(d);
-    } catch(e) {
-      // Fallback: try direct Anthropic (works locally, fails on GitHub Pages due to CORS)
-      const r2 = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
-      });
-      const d2 = await r2.json();
-      if (d2.error) throw new Error(d2.error.message);
-      return d2.content.map(b => b.text || '').join('').trim();
-    }
+    const r = await fetch(PROXY + '/api', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, model: 'claude-sonnet-4-20250514', max_tokens: 1000 })
+    });
+    if (!r.ok) throw new Error('Proxy error ' + r.status);
+    const d = await r.json();
+    if (d.error) throw new Error(d.error);
+    return d.text;
   }
 
   function toggleTheme() { document.body.classList.toggle('light'); }
@@ -324,7 +311,7 @@
       const text = await claudeCall(state.prompts[ai]);
       updateCard(ai, text);
     } catch(e) {
-      setCard(ai, 'waiting', 'Bridge offline — copy prompt and paste manually.');
+      setCard(ai, 'waiting', 'Error: ' + e.message + ' — copy prompt and paste manually.');
       document.getElementById('paste-' + ai).classList.add('visible');
       const btn = document.getElementById('copy-' + ai);
       if (btn) btn.textContent = '📋 COPY PROMPT FOR ' + ai.toUpperCase();
@@ -359,7 +346,7 @@
   async function broadcastMission() {
     if (!state.synthesis) return;
     const broadcastData = { mission: state.mission, synthesis: state.synthesis, responses: state.responses, timestamp: new Date().toISOString() };
-    try { const xhr = new XMLHttpRequest(); xhr.open('POST', BRIDGE + '/broadcast', false); xhr.setRequestHeader('Content-Type', 'application/json'); xhr.send(JSON.stringify(broadcastData)); setStatus('Broadcast pushed to PMM tower. ✅', 'success'); }
+    try { const xhr = new XMLHttpRequest(); xhr.open('POST', 'http://localhost:3747/broadcast', false); xhr.setRequestHeader('Content-Type', 'application/json'); xhr.send(JSON.stringify(broadcastData)); setStatus('Broadcast pushed to PMM tower. ✅', 'success'); }
     catch(e) { navigator.clipboard.writeText(JSON.stringify(broadcastData, null, 2)); setStatus('Bridge offline — synthesis copied to clipboard.', ''); }
   }
 </script>
