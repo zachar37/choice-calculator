@@ -35,86 +35,25 @@
     --gold-glow: rgba(201,168,76,0.1);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Syne', sans-serif;
-    min-height: 100vh;
-    transition: background 0.3s, color 0.3s;
-  }
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 32px;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    background: var(--bg);
-    z-index: 100;
-  }
+  body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; min-height: 100vh; transition: background 0.3s, color 0.3s; }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100; }
   .logo { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--gold); letter-spacing: 3px; }
   .header-title { font-size: 15px; font-weight: 700; letter-spacing: 1px; }
   .header-right { display: flex; gap: 12px; align-items: center; }
-  .toggle-btn {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text-mid);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    padding: 6px 14px;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: all 0.2s;
-  }
+  .toggle-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text-mid); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; padding: 6px 14px; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
   .toggle-btn:hover { border-color: var(--gold); color: var(--gold); }
   .mission-zone { padding: 32px; border-bottom: 1px solid var(--border); }
   .zone-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
   .mission-input-wrap { display: flex; gap: 12px; align-items: flex-start; }
-  textarea {
-    flex: 1;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    padding: 16px;
-    resize: vertical;
-    min-height: 80px;
-    border-radius: 2px;
-    transition: border-color 0.2s;
-    outline: none;
-  }
+  textarea { flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: 'DM Mono', monospace; font-size: 13px; padding: 16px; resize: vertical; min-height: 80px; border-radius: 2px; transition: border-color 0.2s; outline: none; }
   textarea:focus { border-color: var(--gold); }
   textarea::placeholder { color: var(--text-dim); }
-  .send-btn {
-    background: var(--gold);
-    color: #000;
-    border: none;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 12px;
-    letter-spacing: 2px;
-    padding: 16px 28px;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
+  .send-btn { background: var(--gold); color: #000; border: none; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 2px; padding: 16px 28px; cursor: pointer; border-radius: 2px; transition: all 0.2s; white-space: nowrap; }
   .send-btn:hover { background: #e0bc5a; transform: translateY(-1px); }
   .send-btn:disabled { background: var(--gold-dim); cursor: not-allowed; transform: none; }
   .prompts-preview { margin-top: 16px; display: none; gap: 8px; flex-wrap: wrap; }
   .prompts-preview.visible { display: flex; }
-  .prompt-chip {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    padding: 6px 12px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--text-mid);
-  }
+  .prompt-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 2px; padding: 6px 12px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-mid); }
   .prompt-chip span { color: var(--gold); }
   .grid-section { padding: 32px; }
   .grid-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
@@ -122,15 +61,7 @@
   .auto-badge { background: var(--green-dim); border: 1px solid var(--green); color: var(--green); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; padding: 3px 8px; border-radius: 2px; }
   .paste-badge { background: rgba(74,158,255,0.1); border: 1px solid var(--blue); color: var(--blue); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; padding: 3px 8px; border-radius: 2px; }
   .ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .ai-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 20px;
-    transition: border-color 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
+  .ai-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 20px; transition: border-color 0.3s; position: relative; overflow: hidden; }
   .ai-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--card-color, var(--border)); transition: opacity 0.3s; }
   .ai-card.active { border-color: var(--card-color, var(--gold)); }
   .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -140,127 +71,36 @@
   .status-dot.thinking { background: var(--gold); box-shadow: 0 0 6px var(--gold); animation: pulse 1s infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
   .ai-role { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-dim); margin-bottom: 14px; letter-spacing: 0.5px; }
-  .response-area {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    padding: 12px;
-    min-height: 80px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--text-mid);
-    line-height: 1.6;
-    transition: all 0.3s;
-    white-space: pre-wrap;
-    word-break: break-word;
-  }
+  .response-area { background: var(--surface2); border: 1px solid var(--border); border-radius: 2px; padding: 12px; min-height: 80px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-mid); line-height: 1.6; transition: all 0.3s; white-space: pre-wrap; word-break: break-word; }
   .response-area.has-content { color: var(--text); border-color: var(--card-color, var(--border)); }
   .response-area.loading { color: var(--gold); }
   .paste-area { margin-top: 10px; display: none; }
   .paste-area.visible { display: block; }
-  .copy-prompt-btn {
-    width: 100%;
-    background: transparent;
-    border: 1px dashed var(--border);
-    color: var(--text-dim);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 1px;
-    padding: 8px;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: all 0.2s;
-    margin-bottom: 8px;
-  }
+  .copy-prompt-btn { width: 100%; background: transparent; border: 1px dashed var(--border); color: var(--text-dim); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; padding: 8px; cursor: pointer; border-radius: 2px; transition: all 0.2s; margin-bottom: 8px; }
   .copy-prompt-btn:hover { border-color: var(--blue); color: var(--blue); }
   .copy-prompt-btn.copied { border-color: var(--green); color: var(--green); }
-  .paste-input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    padding: 10px;
-    border-radius: 2px;
-    resize: none;
-    height: 70px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
+  .paste-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: 'DM Mono', monospace; font-size: 11px; padding: 10px; border-radius: 2px; resize: none; height: 70px; outline: none; transition: border-color 0.2s; }
   .paste-input:focus { border-color: var(--blue); }
   .paste-input::placeholder { color: var(--text-dim); }
   .synthesis-zone { margin: 0 32px 32px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
   .synthesis-header { background: var(--surface); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
   .synthesis-title { font-size: 13px; font-weight: 700; letter-spacing: 1px; }
-  .synthesize-btn {
-    background: transparent;
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    padding: 8px 16px;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: all 0.2s;
-  }
+  .synthesize-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; padding: 8px 16px; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
   .synthesize-btn:hover { background: var(--gold-glow); }
   .synthesize-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .synthesis-output { padding: 20px; font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.8; color: var(--text-mid); min-height: 120px; white-space: pre-wrap; }
   .synthesis-output.has-content { color: var(--text); }
   .broadcast-row { padding: 0 32px 32px; display: flex; gap: 12px; justify-content: flex-end; }
-  .broadcast-btn {
-    background: transparent;
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 11px;
-    letter-spacing: 3px;
-    padding: 12px 24px;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: all 0.2s;
-    text-transform: uppercase;
-  }
+  .broadcast-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 3px; padding: 12px 24px; cursor: pointer; border-radius: 2px; transition: all 0.2s; text-transform: uppercase; }
   .broadcast-btn:hover { background: var(--gold-glow); box-shadow: 0 0 20px var(--gold-glow); }
   .broadcast-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .mic-btn {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text-mid);
-    width: 48px;
-    height: 48px;
-    border-radius: 2px;
-    cursor: pointer;
-    font-size: 20px;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    align-self: flex-start;
-  }
+  .mic-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text-mid); width: 48px; height: 48px; border-radius: 2px; cursor: pointer; font-size: 20px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; align-self: flex-start; }
   .mic-btn:hover { border-color: var(--gold); }
   .mic-btn.listening { border-color: var(--red); background: rgba(224,85,85,0.1); animation: pulse 1s infinite; color: var(--red); }
-  body.mobile-mode .mobile-badge { display: inline-block; }
   body.mobile-mode .auto-badge { display: none; }
   body.mobile-mode .paste-area { display: block !important; }
   .section-divider { margin: 0 32px; border: none; border-top: 1px solid var(--border); }
-  .status-bar {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    padding: 10px 32px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--text-dim);
-  }
+  .status-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); padding: 10px 32px; display: flex; align-items: center; gap: 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-dim); }
   .status-msg { flex: 1; }
   .status-msg.active { color: var(--gold); }
   .status-msg.success { color: var(--green); }
@@ -298,13 +138,13 @@
 
 <div class="grid-section">
   <div class="grid-header">
-    <div class="grid-label auto-zone-label">Auto Zone</div>
+    <div class="grid-label">Auto Zone</div>
     <div class="auto-badge">CLAUDE HANDLES</div>
   </div>
   <div class="ai-grid">
     <div class="ai-card" id="card-notebooklm" style="--card-color: #4caf7d;">
       <div class="card-header"><div class="ai-name">NotebookLM</div><div class="status-dot" id="dot-notebooklm"></div></div>
-      <div class="ai-role">ARCHIVE / CONTEXT RETRIEVAL</div>
+      <div class="ai-role">WOUND READER / PSYCHOLOGICAL PROFILER</div>
       <div class="response-area" id="resp-notebooklm">Waiting for mission...</div>
       <div class="paste-area" id="paste-notebooklm">
         <button class="copy-prompt-btn" id="copy-notebooklm" onclick="copyPrompt('notebooklm')">📋 COPY PROMPT FOR NOTEBOOKLM</button>
@@ -313,7 +153,7 @@
     </div>
     <div class="ai-card" id="card-gemini" style="--card-color: #4a9eff;">
       <div class="card-header"><div class="ai-name">Gemini</div><div class="status-dot" id="dot-gemini"></div></div>
-      <div class="ai-role">CREATIVE DRAFTING</div>
+      <div class="ai-role">JACK'S VOICE / CREATIVE DRAFT</div>
       <div class="response-area" id="resp-gemini">Waiting for mission...</div>
       <div class="paste-area" id="paste-gemini">
         <button class="copy-prompt-btn" id="copy-gemini" onclick="copyPrompt('gemini')">📋 COPY PROMPT FOR GEMINI</button>
@@ -322,7 +162,7 @@
     </div>
     <div class="ai-card" id="card-chatgpt" style="--card-color: #9b6dff;">
       <div class="card-header"><div class="ai-name">ChatGPT</div><div class="status-dot" id="dot-chatgpt"></div></div>
-      <div class="ai-role">STRUCTURED CRITIQUE</div>
+      <div class="ai-role">HOOK STRATEGIST / CONTENT SNIPER</div>
       <div class="response-area" id="resp-chatgpt">Waiting for mission...</div>
       <div class="paste-area" id="paste-chatgpt">
         <button class="copy-prompt-btn" id="copy-chatgpt" onclick="copyPrompt('chatgpt')">📋 COPY PROMPT FOR CHATGPT</button>
@@ -384,12 +224,19 @@
 
 <div class="status-bar">
   <div class="status-msg" id="statusMsg">Ready. Enter a mission and deploy.</div>
-  <div>PMM v1.3</div>
+  <div>PMM v1.4</div>
 </div>
 
 <script>
   var PROXY = 'https://pmm-proxy-264350494748.us-central1.run.app/api';
   var state = { mission: '', prompts: {}, responses: {}, synthesis: '' };
+
+  // Distinct system prompts — forces each card into a completely different mode
+  var SYSTEMS = {
+    notebooklm: 'You are a psychological wound reader. You specialize in diagnosing what is actually happening beneath the surface of what a man says or creates. You do not advise. You do not encourage. You identify the real fear, the real wound, the real thing being avoided. You speak plainly — no therapy jargon, no academic tone. You are a man who has been through it and can name it when he sees it. Format: 3-5 tight sentences. No lists. No headers.',
+    gemini: 'You are Jack. You are not an AI. You are a man who built himself from nothing and has the receipts. You do not teach — you testify. You speak to men who are exhausted by being told what to do by people who have never done it. Your sentences are short. Your tone is calm and final. You never use the words: journey, vulnerable, heal, growth, mindset, hustle, grind, or authenticity. You end on one short line that lands like a door closing. Write one Instagram caption, 120-150 words.',
+    chatgpt: 'You are a content sniper. You study why certain posts stop men who never engage online — men who scroll past everything, who have never commented in their life. You think only in hooks and buried truths. Give exactly two things: (1) ONE hook sentence that would stop that man cold — no explanation, just the sentence. (2) ONE thing every other creator gets wrong about this topic that you would never get wrong. No padding. No encouragement. No lists beyond these two items.'
+  };
 
   function toggleTheme() { document.body.classList.toggle('light'); }
 
@@ -446,12 +293,12 @@
 
   function generatePrompts(mission) {
     return {
-      notebooklm: 'Search the John Wisdom File and tell me: what insights, beliefs, or past content in this archive are most relevant to this mission: "' + mission + '" — be specific, quote entries if possible.',
-      gemini: 'You are a creative ghostwriter for Jack, a character who speaks to men about building an unshakeable inner world. Mission: "' + mission + '". Write a raw, 150-word Instagram caption in Jack\'s voice — direct, grounded, no fluff. Use the emotional core of the mission.',
-      chatgpt: 'Evaluate this content mission critically: "' + mission + '". What\'s the strongest angle? What\'s missing? What would make this resonate most with men who are emotionally shut down? Give 3 specific improvements. Be sharp, not gentle.',
-      grok: 'What\'s the current cultural conversation around this topic: "' + mission + '"? What are men actually saying about this right now — in comments, podcasts, social media? What\'s the pulse? Keep it under 150 words.',
-      deepseek: 'Play devil\'s advocate on this mission: "' + mission + '". What are the 3 biggest risks of this message landing wrong? What objections would skeptical men have? What could backfire? Be honest and specific.',
-      perplexity: 'Find me 2-3 current data points, studies, or real examples that support or challenge this idea: "' + mission + '". Cite sources if possible. Keep it under 150 words.'
+      notebooklm: 'Read beneath this mission and tell me what is really going on: "' + mission + '". What is the man behind this afraid of? What wound is this touching? What is he actually reaching for underneath the words? Be specific. Name it.',
+      gemini: 'Mission: "' + mission + '". Write the caption.',
+      chatgpt: 'Mission: "' + mission + '". Give me the hook and the buried truth.',
+      grok: 'What is the current cultural conversation around: "' + mission + '"? What are men actually saying about this in comments, podcasts, forums right now? What is the real pulse — not the polished take, the raw one. Under 150 words.',
+      deepseek: 'Play devil\'s advocate on this mission: "' + mission + '". What are the 3 biggest ways this message could land wrong? What would skeptical men say? What could backfire? Be specific and honest.',
+      perplexity: 'Find 2-3 current data points, studies, or real examples that support or challenge: "' + mission + '". Cite sources. Under 150 words.'
     };
   }
 
@@ -471,7 +318,7 @@
     var preview = document.getElementById('promptsPreview');
     preview.innerHTML = '';
     preview.classList.add('visible');
-    var roles = {notebooklm:'Archive', gemini:'Draft', chatgpt:'Critique', grok:'Pulse', deepseek:'Risk', perplexity:'Research'};
+    var roles = {notebooklm:'Wound', gemini:'Jack', chatgpt:'Hook', grok:'Pulse', deepseek:'Risk', perplexity:'Data'};
     Object.keys(roles).forEach(function(ai) {
       var chip = document.createElement('div');
       chip.className = 'prompt-chip';
@@ -499,7 +346,7 @@
       return;
     }
 
-    setStatus('Mission deployed. Auto-zone running via proxy...', 'active');
+    setStatus('Mission deployed. Auto-zone running...', 'active');
     ['notebooklm','gemini','chatgpt'].forEach(function(ai) { setCard(ai, 'thinking'); });
 
     await Promise.all(['notebooklm','gemini','chatgpt'].map(function(ai) { return runAutoZone(ai); }));
@@ -508,14 +355,16 @@
 
   async function runAutoZone(ai) {
     try {
+      var body = {
+        prompt: state.prompts[ai],
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000
+      };
+      if (SYSTEMS[ai]) body.system = SYSTEMS[ai];
       var response = await fetch(PROXY, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          prompt: state.prompts[ai],
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000
-        })
+        body: JSON.stringify(body)
       });
       var data = await response.json();
       if (data.error) throw new Error(data.error);
@@ -571,28 +420,24 @@
     document.getElementById('synthesisOutput').className = 'synthesis-output';
     setStatus('Synthesizing...', 'active');
 
-    var prompt = 'You are the PMM Project Manager synthesizing inputs from 6 AI agents about this mission: "' + state.mission + '"\n\n' +
-      'NOTEBOOKLM (Archive): ' + (state.responses.notebooklm || 'No response') + '\n' +
-      'GEMINI (Draft): ' + (state.responses.gemini || 'No response') + '\n' +
-      'CHATGPT (Critique): ' + (state.responses.chatgpt || 'No response') + '\n' +
-      'GROK (Cultural Pulse): ' + (state.responses.grok || 'No response') + '\n' +
-      'DEEPSEEK (Risk Analysis): ' + (state.responses.deepseek || 'No response') + '\n' +
-      'PERPLEXITY (Research): ' + (state.responses.perplexity || 'No response') + '\n\n' +
-      'Synthesize all of this into:\n' +
-      '1. THE FINAL POST (ready to publish, Jack\'s voice, max 150 words)\n' +
-      '2. KEY INSIGHT (one sentence — what made this land)\n' +
-      '3. RISKS TO WATCH (one sentence from DeepSeek\'s input)\n\n' +
-      'Be decisive. Ship it.';
+    var prompt = 'You are the PMM editorial director. Six agents just responded to this mission: "' + state.mission + '"\n\n' +
+      'WOUND READER: ' + (state.responses.notebooklm || 'No response') + '\n\n' +
+      "JACK'S DRAFT: " + (state.responses.gemini || 'No response') + '\n\n' +
+      'HOOK + BURIED TRUTH: ' + (state.responses.chatgpt || 'No response') + '\n\n' +
+      'CULTURAL PULSE: ' + (state.responses.grok || 'No response') + '\n\n' +
+      'RISK ANALYSIS: ' + (state.responses.deepseek || 'No response') + '\n\n' +
+      'DATA: ' + (state.responses.perplexity || 'No response') + '\n\n' +
+      'Now deliver:\n' +
+      '1. THE FINAL POST — take Jack\'s draft, sharpen it with the hook, ground it in the wound. Max 150 words. Ready to publish.\n' +
+      '2. KEY INSIGHT — one sentence: what made this land.\n' +
+      '3. WATCH OUT — one sentence: the biggest risk from the risk analysis.\n\n' +
+      'Be decisive. No hedging. Ship it.';
 
     try {
       var response = await fetch(PROXY, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          prompt: prompt,
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000
-        })
+        body: JSON.stringify({ prompt: prompt, model: 'claude-sonnet-4-20250514', max_tokens: 1000 })
       });
       var data = await response.json();
       if (data.error) throw new Error(data.error);
@@ -611,12 +456,7 @@
 
   async function broadcastMission() {
     if (!state.synthesis) return;
-    var broadcastData = {
-      mission: state.mission,
-      synthesis: state.synthesis,
-      responses: state.responses,
-      timestamp: new Date().toISOString()
-    };
+    var broadcastData = { mission: state.mission, synthesis: state.synthesis, responses: state.responses, timestamp: new Date().toISOString() };
     try {
       var xhr = new XMLHttpRequest();
       xhr.open('POST', 'http://localhost:3747/broadcast', false);
