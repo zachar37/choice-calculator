@@ -7,33 +7,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #c9a84c;
-    --gold-dim: #8a6e2f;
-    --gold-glow: rgba(201,168,76,0.15);
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --surface2: #1a1a1a;
-    --border: #222222;
-    --text: #e8e8e8;
-    --text-dim: #666;
-    --text-mid: #999;
-    --green: #4caf7d;
-    --green-dim: rgba(76,175,125,0.15);
-    --red: #e05555;
-    --blue: #4a9eff;
-    --purple: #9b6dff;
-    --orange: #ff8c42;
+    --gold: #c9a84c; --gold-dim: #8a6e2f; --gold-glow: rgba(201,168,76,0.15);
+    --bg: #0a0a0a; --surface: #111111; --surface2: #1a1a1a; --border: #222222;
+    --text: #e8e8e8; --text-dim: #666; --text-mid: #999;
+    --green: #4caf7d; --green-dim: rgba(76,175,125,0.15);
+    --red: #e05555; --blue: #4a9eff; --orange: #ff8c42;
   }
-  .light {
-    --bg: #f2f0eb;
-    --surface: #ffffff;
-    --surface2: #f7f5f0;
-    --border: #ddd;
-    --text: #111;
-    --text-dim: #aaa;
-    --text-mid: #666;
-    --gold-glow: rgba(201,168,76,0.1);
-  }
+  .light { --bg: #f2f0eb; --surface: #ffffff; --surface2: #f7f5f0; --border: #ddd; --text: #111; --text-dim: #aaa; --text-mid: #666; --gold-glow: rgba(201,168,76,0.1); }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; min-height: 100vh; transition: background 0.3s, color 0.3s; }
   header { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100; }
@@ -62,15 +42,16 @@
   .paste-badge { background: rgba(74,158,255,0.1); border: 1px solid var(--blue); color: var(--blue); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; padding: 3px 8px; border-radius: 2px; }
   .ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .ai-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 20px; transition: border-color 0.3s; position: relative; overflow: hidden; }
-  .ai-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--card-color, var(--border)); transition: opacity 0.3s; }
+  .ai-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--card-color, var(--border)); }
   .ai-card.active { border-color: var(--card-color, var(--gold)); }
-  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
   .ai-name { font-weight: 700; font-size: 14px; letter-spacing: 0.5px; }
   .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-dim); transition: background 0.3s; }
   .status-dot.online { background: var(--green); box-shadow: 0 0 6px var(--green); }
   .status-dot.thinking { background: var(--gold); box-shadow: 0 0 6px var(--gold); animation: pulse 1s infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-  .ai-role { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-dim); margin-bottom: 14px; letter-spacing: 0.5px; }
+  .ai-role { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-dim); margin-bottom: 6px; letter-spacing: 0.5px; }
+  .ai-task { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); margin-bottom: 12px; font-style: italic; min-height: 14px; }
   .response-area { background: var(--surface2); border: 1px solid var(--border); border-radius: 2px; padding: 12px; min-height: 80px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-mid); line-height: 1.6; transition: all 0.3s; white-space: pre-wrap; word-break: break-word; }
   .response-area.has-content { color: var(--text); border-color: var(--card-color, var(--border)); }
   .response-area.loading { color: var(--gold); }
@@ -106,8 +87,7 @@
   .status-msg.success { color: var(--green); }
   .status-msg.error { color: var(--red); }
   @media (max-width: 768px) {
-    header { padding: 14px 16px; }
-    .header-title { font-size: 12px; }
+    header { padding: 14px 16px; } .header-title { font-size: 12px; }
     .mission-zone, .grid-section { padding: 16px; }
     .ai-grid { grid-template-columns: 1fr; }
     .synthesis-zone { margin: 0 16px 16px; }
@@ -144,7 +124,8 @@
   <div class="ai-grid">
     <div class="ai-card" id="card-notebooklm" style="--card-color: #4caf7d;">
       <div class="card-header"><div class="ai-name">NotebookLM</div><div class="status-dot" id="dot-notebooklm"></div></div>
-      <div class="ai-role">WOUND READER / PSYCHOLOGICAL PROFILER</div>
+      <div class="ai-role">ARCHIVE / PSYCHOLOGICAL LENS</div>
+      <div class="ai-task" id="task-notebooklm"></div>
       <div class="response-area" id="resp-notebooklm">Waiting for mission...</div>
       <div class="paste-area" id="paste-notebooklm">
         <button class="copy-prompt-btn" id="copy-notebooklm" onclick="copyPrompt('notebooklm')">📋 COPY PROMPT FOR NOTEBOOKLM</button>
@@ -154,6 +135,7 @@
     <div class="ai-card" id="card-gemini" style="--card-color: #4a9eff;">
       <div class="card-header"><div class="ai-name">Gemini</div><div class="status-dot" id="dot-gemini"></div></div>
       <div class="ai-role">JACK'S VOICE / CREATIVE DRAFT</div>
+      <div class="ai-task" id="task-gemini"></div>
       <div class="response-area" id="resp-gemini">Waiting for mission...</div>
       <div class="paste-area" id="paste-gemini">
         <button class="copy-prompt-btn" id="copy-gemini" onclick="copyPrompt('gemini')">📋 COPY PROMPT FOR GEMINI</button>
@@ -163,6 +145,7 @@
     <div class="ai-card" id="card-chatgpt" style="--card-color: #9b6dff;">
       <div class="card-header"><div class="ai-name">ChatGPT</div><div class="status-dot" id="dot-chatgpt"></div></div>
       <div class="ai-role">HOOK STRATEGIST / CONTENT SNIPER</div>
+      <div class="ai-task" id="task-chatgpt"></div>
       <div class="response-area" id="resp-chatgpt">Waiting for mission...</div>
       <div class="paste-area" id="paste-chatgpt">
         <button class="copy-prompt-btn" id="copy-chatgpt" onclick="copyPrompt('chatgpt')">📋 COPY PROMPT FOR CHATGPT</button>
@@ -183,6 +166,7 @@
     <div class="ai-card" id="card-grok" style="--card-color: #ff8c42;">
       <div class="card-header"><div class="ai-name">Grok</div><div class="status-dot" id="dot-grok"></div></div>
       <div class="ai-role">CULTURAL PULSE / TRENDS</div>
+      <div class="ai-task" id="task-grok"></div>
       <div class="response-area" id="resp-grok">Waiting for mission...</div>
       <div class="paste-area" id="paste-grok">
         <button class="copy-prompt-btn" id="copy-grok" onclick="copyPrompt('grok')">📋 COPY PROMPT FOR GROK</button>
@@ -192,6 +176,7 @@
     <div class="ai-card" id="card-deepseek" style="--card-color: #e05555;">
       <div class="card-header"><div class="ai-name">DeepSeek</div><div class="status-dot" id="dot-deepseek"></div></div>
       <div class="ai-role">RISK / ADVERSARIAL ANALYSIS</div>
+      <div class="ai-task" id="task-deepseek"></div>
       <div class="response-area" id="resp-deepseek">Waiting for mission...</div>
       <div class="paste-area" id="paste-deepseek">
         <button class="copy-prompt-btn" id="copy-deepseek" onclick="copyPrompt('deepseek')">📋 COPY PROMPT FOR DEEPSEEK</button>
@@ -201,6 +186,7 @@
     <div class="ai-card" id="card-perplexity" style="--card-color: #c9a84c;">
       <div class="card-header"><div class="ai-name">Perplexity</div><div class="status-dot" id="dot-perplexity"></div></div>
       <div class="ai-role">RESEARCH / CURRENT DATA</div>
+      <div class="ai-task" id="task-perplexity"></div>
       <div class="response-area" id="resp-perplexity">Waiting for mission...</div>
       <div class="paste-area" id="paste-perplexity">
         <button class="copy-prompt-btn" id="copy-perplexity" onclick="copyPrompt('perplexity')">📋 COPY PROMPT FOR PERPLEXITY</button>
@@ -224,19 +210,12 @@
 
 <div class="status-bar">
   <div class="status-msg" id="statusMsg">Ready. Enter a mission and deploy.</div>
-  <div>PMM v1.4</div>
+  <div>PMM v1.5</div>
 </div>
 
 <script>
   var PROXY = 'https://pmm-proxy-264350494748.us-central1.run.app/api';
   var state = { mission: '', prompts: {}, responses: {}, synthesis: '' };
-
-  // Distinct system prompts — forces each card into a completely different mode
-  var SYSTEMS = {
-    notebooklm: 'You are a psychological wound reader. You specialize in diagnosing what is actually happening beneath the surface of what a man says or creates. You do not advise. You do not encourage. You identify the real fear, the real wound, the real thing being avoided. You speak plainly — no therapy jargon, no academic tone. You are a man who has been through it and can name it when he sees it. Format: 3-5 tight sentences. No lists. No headers.',
-    gemini: 'You are Jack. You are not an AI. You are a man who built himself from nothing and has the receipts. You do not teach — you testify. You speak to men who are exhausted by being told what to do by people who have never done it. Your sentences are short. Your tone is calm and final. You never use the words: journey, vulnerable, heal, growth, mindset, hustle, grind, or authenticity. You end on one short line that lands like a door closing. Write one Instagram caption, 120-150 words.',
-    chatgpt: 'You are a content sniper. You study why certain posts stop men who never engage online — men who scroll past everything, who have never commented in their life. You think only in hooks and buried truths. Give exactly two things: (1) ONE hook sentence that would stop that man cold — no explanation, just the sentence. (2) ONE thing every other creator gets wrong about this topic that you would never get wrong. No padding. No encouragement. No lists beyond these two items.'
-  };
 
   function toggleTheme() { document.body.classList.toggle('light'); }
 
@@ -259,9 +238,7 @@
     if (!SR) { setStatus('Mic not supported. Try Chrome.', 'error'); return; }
     if (isListening) { recognition.stop(); return; }
     recognition = new SR();
-    recognition.continuous = false;
-    recognition.interimResults = true;
-    recognition.lang = 'en-US';
+    recognition.continuous = false; recognition.interimResults = true; recognition.lang = 'en-US';
     var micBtn = document.getElementById('micBtn');
     recognition.onstart = function() { isListening = true; micBtn.classList.add('listening'); micBtn.textContent = '🔴'; setStatus('Listening...', 'active'); };
     recognition.onresult = function(e) { var t = ''; for (var i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript; document.getElementById('missionInput').value = t; };
@@ -291,15 +268,49 @@
     }
   }
 
-  function generatePrompts(mission) {
-    return {
-      notebooklm: 'Read beneath this mission and tell me what is really going on: "' + mission + '". What is the man behind this afraid of? What wound is this touching? What is he actually reaching for underneath the words? Be specific. Name it.',
-      gemini: 'Mission: "' + mission + '". Write the caption.',
-      chatgpt: 'Mission: "' + mission + '". Give me the hook and the buried truth.',
-      grok: 'What is the current cultural conversation around: "' + mission + '"? What are men actually saying about this in comments, podcasts, forums right now? What is the real pulse — not the polished take, the raw one. Under 150 words.',
-      deepseek: 'Play devil\'s advocate on this mission: "' + mission + '". What are the 3 biggest ways this message could land wrong? What would skeptical men say? What could backfire? Be specific and honest.',
-      perplexity: 'Find 2-3 current data points, studies, or real examples that support or challenge: "' + mission + '". Cite sources. Under 150 words.'
-    };
+  function setTask(ai, task) {
+    var el = document.getElementById('task-' + ai);
+    if (el) el.textContent = task ? '→ ' + task : '';
+  }
+
+  // Step 1: Claude reads the mission and writes custom prompts for all 6 agents
+  async function generatePrompts(mission) {
+    var orchestratorSystem = 'You are the PMM Orchestrator. You receive a mission statement from a content creator and you write precise, custom instructions for 6 AI agents that will each attack the mission from a completely different angle. You think strategically about what each agent should specifically do with THIS mission — not generic templates. You return ONLY valid JSON, no markdown, no explanation.';
+
+    var orchestratorPrompt = 'Mission: "' + mission + '"\n\n' +
+      'Write a custom prompt for each of these 6 agents. Each prompt must be completely specific to this mission — what angle to take, what to look for, what format to return. Make each one genuinely different from the others.\n\n' +
+      'Agents:\n' +
+      '- notebooklm: Psychological wound reader. Diagnoses the real fear, wound, or unspoken need beneath this mission.\n' +
+      '- gemini: Writes as Jack — a stoic, high-status man who testifies from experience. No advice, no therapy words. Short punchy sentences. Ends on silence.\n' +
+      '- chatgpt: Content sniper. One scroll-stopping hook + one buried truth nobody else is saying about this topic.\n' +
+      '- grok: What are men actually saying about this topic RIGHT NOW in comments, podcasts, forums? The raw pulse, not the polished take.\n' +
+      '- deepseek: Devil\'s advocate. What are the 3 specific ways this message could land wrong or backfire?\n' +
+      '- perplexity: 2-3 current data points, studies, or real examples that support or challenge this mission. Cite sources.\n\n' +
+      'Also write a short "task" label (5 words max) for each agent describing their specific job on this mission.\n\n' +
+      'Return ONLY this JSON structure:\n' +
+      '{\n' +
+      '  "notebooklm": { "task": "...", "prompt": "..." },\n' +
+      '  "gemini": { "task": "...", "prompt": "..." },\n' +
+      '  "chatgpt": { "task": "...", "prompt": "..." },\n' +
+      '  "grok": { "task": "...", "prompt": "..." },\n' +
+      '  "deepseek": { "task": "...", "prompt": "..." },\n' +
+      '  "perplexity": { "task": "...", "prompt": "..." }\n' +
+      '}';
+
+    var response = await fetch(PROXY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt: orchestratorPrompt,
+        system: orchestratorSystem,
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000
+      })
+    });
+    var data = await response.json();
+    if (data.error) throw new Error(data.error);
+    var parsed = JSON.parse(data.text);
+    return parsed;
   }
 
   async function executeMission() {
@@ -307,7 +318,7 @@
     if (!mission) return;
     state.mission = mission;
     state.responses = {};
-    state.prompts = generatePrompts(mission);
+    state.prompts = {};
 
     document.getElementById('sendBtn').disabled = true;
     document.getElementById('synthesizeBtn').disabled = true;
@@ -315,19 +326,46 @@
     document.getElementById('synthesisOutput').textContent = 'Deploy a mission to generate synthesis...';
     document.getElementById('synthesisOutput').className = 'synthesis-output';
 
+    ['notebooklm','gemini','chatgpt','grok','deepseek','perplexity'].forEach(function(ai) {
+      setCard(ai, 'waiting');
+      setTask(ai, '');
+    });
+
+    // Clear prompt chips
     var preview = document.getElementById('promptsPreview');
     preview.innerHTML = '';
+    preview.classList.remove('visible');
+
+    setStatus('Reading mission... writing agent prompts...', 'active');
+
+    // Step 1: Orchestrator generates custom prompts
+    var agentDefs;
+    try {
+      agentDefs = await generatePrompts(mission);
+    } catch(e) {
+      setStatus('Orchestrator error: ' + e.message, 'error');
+      document.getElementById('sendBtn').disabled = false;
+      return;
+    }
+
+    // Store prompts and show task labels
+    ['notebooklm','gemini','chatgpt','grok','deepseek','perplexity'].forEach(function(ai) {
+      if (agentDefs[ai]) {
+        state.prompts[ai] = agentDefs[ai].prompt;
+        setTask(ai, agentDefs[ai].task);
+      }
+    });
+
+    // Show chips
     preview.classList.add('visible');
-    var roles = {notebooklm:'Wound', gemini:'Jack', chatgpt:'Hook', grok:'Pulse', deepseek:'Risk', perplexity:'Data'};
-    Object.keys(roles).forEach(function(ai) {
+    ['notebooklm','gemini','chatgpt','grok','deepseek','perplexity'].forEach(function(ai) {
       var chip = document.createElement('div');
       chip.className = 'prompt-chip';
-      chip.innerHTML = '<span>' + roles[ai] + ':</span> ' + ai;
+      chip.innerHTML = '<span>' + ai + ':</span> ' + (agentDefs[ai] ? agentDefs[ai].task : '...');
       preview.appendChild(chip);
     });
 
-    ['notebooklm','gemini','chatgpt','grok','deepseek','perplexity'].forEach(function(ai) { setCard(ai, 'waiting'); });
-
+    // Show paste areas for paste zone
     ['grok','deepseek','perplexity'].forEach(function(ai) {
       document.getElementById('paste-' + ai).classList.add('visible');
       var btn = document.getElementById('copy-' + ai);
@@ -346,7 +384,8 @@
       return;
     }
 
-    setStatus('Mission deployed. Auto-zone running...', 'active');
+    // Step 2: Fire auto-zone with custom prompts
+    setStatus('Prompts written. Auto-zone running...', 'active');
     ['notebooklm','gemini','chatgpt'].forEach(function(ai) { setCard(ai, 'thinking'); });
 
     await Promise.all(['notebooklm','gemini','chatgpt'].map(function(ai) { return runAutoZone(ai); }));
@@ -355,16 +394,14 @@
 
   async function runAutoZone(ai) {
     try {
-      var body = {
-        prompt: state.prompts[ai],
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000
-      };
-      if (SYSTEMS[ai]) body.system = SYSTEMS[ai];
       var response = await fetch(PROXY, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+        body: JSON.stringify({
+          prompt: state.prompts[ai],
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000
+        })
       });
       var data = await response.json();
       if (data.error) throw new Error(data.error);
@@ -420,18 +457,18 @@
     document.getElementById('synthesisOutput').className = 'synthesis-output';
     setStatus('Synthesizing...', 'active');
 
-    var prompt = 'You are the PMM editorial director. Six agents just responded to this mission: "' + state.mission + '"\n\n' +
-      'WOUND READER: ' + (state.responses.notebooklm || 'No response') + '\n\n' +
-      "JACK'S DRAFT: " + (state.responses.gemini || 'No response') + '\n\n' +
-      'HOOK + BURIED TRUTH: ' + (state.responses.chatgpt || 'No response') + '\n\n' +
-      'CULTURAL PULSE: ' + (state.responses.grok || 'No response') + '\n\n' +
-      'RISK ANALYSIS: ' + (state.responses.deepseek || 'No response') + '\n\n' +
-      'DATA: ' + (state.responses.perplexity || 'No response') + '\n\n' +
-      'Now deliver:\n' +
-      '1. THE FINAL POST — take Jack\'s draft, sharpen it with the hook, ground it in the wound. Max 150 words. Ready to publish.\n' +
+    var prompt = 'You are the PMM editorial director. Six agents just attacked this mission: "' + state.mission + '"\n\n' +
+      'WOUND READER (NotebookLM): ' + (state.responses.notebooklm || 'No response') + '\n\n' +
+      "JACK'S VOICE (Gemini): " + (state.responses.gemini || 'No response') + '\n\n' +
+      'HOOK SNIPER (ChatGPT): ' + (state.responses.chatgpt || 'No response') + '\n\n' +
+      'CULTURAL PULSE (Grok): ' + (state.responses.grok || 'No response') + '\n\n' +
+      'RISK ANALYSIS (DeepSeek): ' + (state.responses.deepseek || 'No response') + '\n\n' +
+      'DATA (Perplexity): ' + (state.responses.perplexity || 'No response') + '\n\n' +
+      'Deliver:\n' +
+      '1. THE FINAL POST — Jack\'s voice, sharpened by the hook, grounded in the wound. Max 150 words. Ready to publish.\n' +
       '2. KEY INSIGHT — one sentence: what made this land.\n' +
-      '3. WATCH OUT — one sentence: the biggest risk from the risk analysis.\n\n' +
-      'Be decisive. No hedging. Ship it.';
+      '3. WATCH OUT — one sentence: the biggest risk.\n\n' +
+      'Be decisive. Ship it.';
 
     try {
       var response = await fetch(PROXY, {
