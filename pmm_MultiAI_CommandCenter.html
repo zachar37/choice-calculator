@@ -35,25 +35,86 @@
     --gold-glow: rgba(201,168,76,0.1);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; min-height: 100vh; transition: background 0.3s, color 0.3s; }
-  header { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+  }
   .logo { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--gold); letter-spacing: 3px; }
   .header-title { font-size: 15px; font-weight: 700; letter-spacing: 1px; }
   .header-right { display: flex; gap: 12px; align-items: center; }
-  .toggle-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text-mid); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; padding: 6px 14px; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
+  .toggle-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-mid);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 6px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
   .toggle-btn:hover { border-color: var(--gold); color: var(--gold); }
   .mission-zone { padding: 32px; border-bottom: 1px solid var(--border); }
   .zone-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
   .mission-input-wrap { display: flex; gap: 12px; align-items: flex-start; }
-  textarea { flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: 'DM Mono', monospace; font-size: 13px; padding: 16px; resize: vertical; min-height: 80px; border-radius: 2px; transition: border-color 0.2s; outline: none; }
+  textarea {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    padding: 16px;
+    resize: vertical;
+    min-height: 80px;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
   textarea:focus { border-color: var(--gold); }
   textarea::placeholder { color: var(--text-dim); }
-  .send-btn { background: var(--gold); color: #000; border: none; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 2px; padding: 16px 28px; cursor: pointer; border-radius: 2px; transition: all 0.2s; white-space: nowrap; }
+  .send-btn {
+    background: var(--gold);
+    color: #000;
+    border: none;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 2px;
+    padding: 16px 28px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
   .send-btn:hover { background: #e0bc5a; transform: translateY(-1px); }
   .send-btn:disabled { background: var(--gold-dim); cursor: not-allowed; transform: none; }
   .prompts-preview { margin-top: 16px; display: none; gap: 8px; flex-wrap: wrap; }
   .prompts-preview.visible { display: flex; }
-  .prompt-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 2px; padding: 6px 12px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-mid); }
+  .prompt-chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 6px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-mid);
+  }
   .prompt-chip span { color: var(--gold); }
   .grid-section { padding: 32px; }
   .grid-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
@@ -61,8 +122,16 @@
   .auto-badge { background: var(--green-dim); border: 1px solid var(--green); color: var(--green); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; padding: 3px 8px; border-radius: 2px; }
   .paste-badge { background: rgba(74,158,255,0.1); border: 1px solid var(--blue); color: var(--blue); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; padding: 3px 8px; border-radius: 2px; }
   .ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .ai-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 20px; transition: border-color 0.3s; position: relative; overflow: hidden; }
-  .ai-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--card-color, var(--border)); }
+  .ai-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    transition: border-color 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .ai-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--card-color, var(--border)); transition: opacity 0.3s; }
   .ai-card.active { border-color: var(--card-color, var(--gold)); }
   .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
   .ai-name { font-weight: 700; font-size: 14px; letter-spacing: 0.5px; }
@@ -71,36 +140,127 @@
   .status-dot.thinking { background: var(--gold); box-shadow: 0 0 6px var(--gold); animation: pulse 1s infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
   .ai-role { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-dim); margin-bottom: 14px; letter-spacing: 0.5px; }
-  .response-area { background: var(--surface2); border: 1px solid var(--border); border-radius: 2px; padding: 12px; min-height: 80px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-mid); line-height: 1.6; transition: all 0.3s; white-space: pre-wrap; word-break: break-word; }
+  .response-area {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 12px;
+    min-height: 80px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mid);
+    line-height: 1.6;
+    transition: all 0.3s;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
   .response-area.has-content { color: var(--text); border-color: var(--card-color, var(--border)); }
   .response-area.loading { color: var(--gold); }
   .paste-area { margin-top: 10px; display: none; }
   .paste-area.visible { display: block; }
-  .copy-prompt-btn { width: 100%; background: transparent; border: 1px dashed var(--border); color: var(--text-dim); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; padding: 8px; cursor: pointer; border-radius: 2px; transition: all 0.2s; margin-bottom: 8px; }
+  .copy-prompt-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    margin-bottom: 8px;
+  }
   .copy-prompt-btn:hover { border-color: var(--blue); color: var(--blue); }
   .copy-prompt-btn.copied { border-color: var(--green); color: var(--green); }
-  .paste-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: 'DM Mono', monospace; font-size: 11px; padding: 10px; border-radius: 2px; resize: none; height: 70px; outline: none; transition: border-color 0.2s; }
+  .paste-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 10px;
+    border-radius: 2px;
+    resize: none;
+    height: 70px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
   .paste-input:focus { border-color: var(--blue); }
   .paste-input::placeholder { color: var(--text-dim); }
   .synthesis-zone { margin: 0 32px 32px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
   .synthesis-header { background: var(--surface); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
   .synthesis-title { font-size: 13px; font-weight: 700; letter-spacing: 1px; }
-  .synthesize-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; padding: 8px 16px; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
+  .synthesize-btn {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
   .synthesize-btn:hover { background: var(--gold-glow); }
   .synthesize-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .synthesis-output { padding: 20px; font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.8; color: var(--text-mid); min-height: 120px; white-space: pre-wrap; }
   .synthesis-output.has-content { color: var(--text); }
   .broadcast-row { padding: 0 32px 32px; display: flex; gap: 12px; justify-content: flex-end; }
-  .broadcast-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 3px; padding: 12px 24px; cursor: pointer; border-radius: 2px; transition: all 0.2s; text-transform: uppercase; }
+  .broadcast-btn {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 12px 24px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
   .broadcast-btn:hover { background: var(--gold-glow); box-shadow: 0 0 20px var(--gold-glow); }
   .broadcast-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .mic-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text-mid); width: 48px; height: 48px; border-radius: 2px; cursor: pointer; font-size: 20px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; align-self: flex-start; }
+  .mic-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-mid);
+    width: 48px;
+    height: 48px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
   .mic-btn:hover { border-color: var(--gold); }
   .mic-btn.listening { border-color: var(--red); background: rgba(224,85,85,0.1); animation: pulse 1s infinite; color: var(--red); }
+  body.mobile-mode .mobile-badge { display: inline-block; }
   body.mobile-mode .auto-badge { display: none; }
   body.mobile-mode .paste-area { display: block !important; }
   .section-divider { margin: 0 32px; border: none; border-top: 1px solid var(--border); }
-  .status-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); padding: 10px 32px; display: flex; align-items: center; gap: 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-dim); }
+  .status-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
   .status-msg { flex: 1; }
   .status-msg.active { color: var(--gold); }
   .status-msg.success { color: var(--green); }
@@ -116,6 +276,7 @@
 </style>
 </head>
 <body>
+
 <header>
   <div class="logo">PMM</div>
   <div class="header-title">MULTI-AI COMMAND CENTER</div>
@@ -124,6 +285,7 @@
     <button class="toggle-btn" onclick="toggleTheme()">LIGHT / DARK</button>
   </div>
 </header>
+
 <div class="mission-zone">
   <div class="zone-label">// Mission Input</div>
   <div class="mission-input-wrap">
@@ -133,9 +295,10 @@
   </div>
   <div class="prompts-preview" id="promptsPreview"></div>
 </div>
+
 <div class="grid-section">
   <div class="grid-header">
-    <div class="grid-label">Auto Zone</div>
+    <div class="grid-label auto-zone-label">Auto Zone</div>
     <div class="auto-badge">CLAUDE HANDLES</div>
   </div>
   <div class="ai-grid">
@@ -168,7 +331,9 @@
     </div>
   </div>
 </div>
+
 <hr class="section-divider">
+
 <div class="grid-section">
   <div class="grid-header">
     <div class="grid-label">Paste Zone</div>
@@ -204,6 +369,7 @@
     </div>
   </div>
 </div>
+
 <div class="synthesis-zone">
   <div class="synthesis-header">
     <div class="synthesis-title">⚡ SYNTHESIS OUTPUT</div>
@@ -211,143 +377,256 @@
   </div>
   <div class="synthesis-output" id="synthesisOutput">Deploy a mission to generate synthesis...</div>
 </div>
+
 <div class="broadcast-row">
   <button class="broadcast-btn" id="broadcastBtn" onclick="broadcastMission()" disabled>📡 PUSH TO BROADCAST</button>
 </div>
+
 <div class="status-bar">
   <div class="status-msg" id="statusMsg">Ready. Enter a mission and deploy.</div>
   <div>PMM v1.3</div>
 </div>
-<script>
-  const state = { mission: '', prompts: {}, responses: {}, synthesis: '' };
-  const PROXY = 'https://pmm-proxy-264350494748.us-central1.run.app';
 
-  async function claudeCall(prompt) {
-    const r = await fetch(PROXY + '/api', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, model: 'claude-sonnet-4-20250514', max_tokens: 1000 })
-    });
-    if (!r.ok) throw new Error('Proxy error ' + r.status);
-    const d = await r.json();
-    if (d.error) throw new Error(d.error);
-    return d.text;
-  }
+<script>
+  var PROXY = 'https://pmm-proxy-264350494748.us-central1.run.app/api';
+  var state = { mission: '', prompts: {}, responses: {}, synthesis: '' };
 
   function toggleTheme() { document.body.classList.toggle('light'); }
+
   function toggleMobileMode() {
-    const isMobile = document.body.classList.toggle('mobile-mode');
-    const btn = document.getElementById('mobileBtn');
+    var isMobile = document.body.classList.toggle('mobile-mode');
+    var btn = document.getElementById('mobileBtn');
     btn.textContent = isMobile ? '🖥️ DESKTOP' : '📱 MOBILE';
     btn.style.borderColor = isMobile ? 'var(--orange)' : '';
     btn.style.color = isMobile ? 'var(--orange)' : '';
-    ['notebooklm','gemini','chatgpt'].forEach(ai => {
-      const pa = document.getElementById('paste-' + ai);
+    ['notebooklm','gemini','chatgpt'].forEach(function(ai) {
+      var pa = document.getElementById('paste-' + ai);
       if (pa) pa.classList.toggle('visible', isMobile && !!state.prompts[ai]);
     });
     setStatus(isMobile ? 'Mobile mode: all 6 AIs use paste input.' : 'Desktop mode: auto-zone active.', isMobile ? 'active' : '');
   }
-  let recognition = null, isListening = false;
+
+  var recognition = null, isListening = false;
   function toggleMic() {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) { setStatus('Mic not supported. Try Chrome.', 'error'); return; }
     if (isListening) { recognition.stop(); return; }
     recognition = new SR();
-    recognition.continuous = false; recognition.interimResults = true; recognition.lang = 'en-US';
-    const micBtn = document.getElementById('micBtn');
-    recognition.onstart = () => { isListening = true; micBtn.classList.add('listening'); micBtn.textContent = '🔴'; setStatus('Listening...', 'active'); };
-    recognition.onresult = (e) => { let t = ''; for (let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript; document.getElementById('missionInput').value = t; };
-    recognition.onend = () => { isListening = false; micBtn.classList.remove('listening'); micBtn.textContent = '🎤'; setStatus('Got it. Hit Deploy.', 'success'); };
-    recognition.onerror = (e) => { isListening = false; micBtn.classList.remove('listening'); micBtn.textContent = '🎤'; setStatus('Mic error: ' + e.error, 'error'); };
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+    var micBtn = document.getElementById('micBtn');
+    recognition.onstart = function() { isListening = true; micBtn.classList.add('listening'); micBtn.textContent = '🔴'; setStatus('Listening...', 'active'); };
+    recognition.onresult = function(e) { var t = ''; for (var i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript; document.getElementById('missionInput').value = t; };
+    recognition.onend = function() { isListening = false; micBtn.classList.remove('listening'); micBtn.textContent = '🎤'; setStatus('Got it. Hit Deploy.', 'success'); };
+    recognition.onerror = function(e) { isListening = false; micBtn.classList.remove('listening'); micBtn.textContent = '🎤'; setStatus('Mic error: ' + e.error, 'error'); };
     recognition.start();
   }
-  function setStatus(msg, type='') { const el = document.getElementById('statusMsg'); el.textContent = msg; el.className = 'status-msg ' + type; }
-  function setCard(ai, stateName, text) {
-    const dot = document.getElementById('dot-' + ai);
-    const resp = document.getElementById('resp-' + ai);
-    const card = document.getElementById('card-' + ai);
-    dot.className = 'status-dot'; resp.className = 'response-area';
-    if (stateName === 'thinking') { dot.classList.add('thinking'); resp.classList.add('loading'); resp.textContent = text || 'Thinking...'; card.classList.add('active'); }
-    else if (stateName === 'done') { dot.classList.add('online'); resp.classList.add('has-content'); resp.textContent = text; card.classList.add('active'); }
-    else { resp.textContent = text || 'Waiting for mission...'; card.classList.remove('active'); }
+
+  function setStatus(msg, type) {
+    var el = document.getElementById('statusMsg');
+    el.textContent = msg;
+    el.className = 'status-msg ' + (type || '');
   }
+
+  function setCard(ai, stateName, text) {
+    var dot = document.getElementById('dot-' + ai);
+    var resp = document.getElementById('resp-' + ai);
+    var card = document.getElementById('card-' + ai);
+    dot.className = 'status-dot';
+    resp.className = 'response-area';
+    if (stateName === 'thinking') {
+      dot.classList.add('thinking'); resp.classList.add('loading'); resp.textContent = text || 'Thinking...'; card.classList.add('active');
+    } else if (stateName === 'done') {
+      dot.classList.add('online'); resp.classList.add('has-content'); resp.textContent = text; card.classList.add('active');
+    } else {
+      resp.textContent = text || 'Waiting for mission...'; card.classList.remove('active');
+    }
+  }
+
   function generatePrompts(mission) {
     return {
-      notebooklm: `Search the John Wisdom File and tell me: what insights, beliefs, or past content in this archive are most relevant to this mission: "${mission}" — be specific, quote entries if possible.`,
-      gemini: `You are a creative ghostwriter for Jack, a character who speaks to men about building an unshakeable inner world. Mission: "${mission}". Write a raw, 150-word Instagram caption in Jack's voice — direct, grounded, no fluff. Use the emotional core of the mission.`,
-      chatgpt: `Evaluate this content mission critically: "${mission}". What's the strongest angle? What's missing? What would make this resonate most with men who are emotionally shut down? Give 3 specific improvements. Be sharp, not gentle.`,
-      grok: `What's the current cultural conversation around this topic: "${mission}"? What are men actually saying about this right now — in comments, podcasts, social media? What's the pulse? Keep it under 150 words.`,
-      deepseek: `Play devil's advocate on this mission: "${mission}". What are the 3 biggest risks of this message landing wrong? What objections would skeptical men have? What could backfire? Be honest and specific.`,
-      perplexity: `Find me 2-3 current data points, studies, or real examples that support or challenge this idea: "${mission}". Cite sources if possible. Keep it under 150 words.`
+      notebooklm: 'Search the John Wisdom File and tell me: what insights, beliefs, or past content in this archive are most relevant to this mission: "' + mission + '" — be specific, quote entries if possible.',
+      gemini: 'You are a creative ghostwriter for Jack, a character who speaks to men about building an unshakeable inner world. Mission: "' + mission + '". Write a raw, 150-word Instagram caption in Jack\'s voice — direct, grounded, no fluff. Use the emotional core of the mission.',
+      chatgpt: 'Evaluate this content mission critically: "' + mission + '". What\'s the strongest angle? What\'s missing? What would make this resonate most with men who are emotionally shut down? Give 3 specific improvements. Be sharp, not gentle.',
+      grok: 'What\'s the current cultural conversation around this topic: "' + mission + '"? What are men actually saying about this right now — in comments, podcasts, social media? What\'s the pulse? Keep it under 150 words.',
+      deepseek: 'Play devil\'s advocate on this mission: "' + mission + '". What are the 3 biggest risks of this message landing wrong? What objections would skeptical men have? What could backfire? Be honest and specific.',
+      perplexity: 'Find me 2-3 current data points, studies, or real examples that support or challenge this idea: "' + mission + '". Cite sources if possible. Keep it under 150 words.'
     };
   }
+
   async function executeMission() {
-    const mission = document.getElementById('missionInput').value.trim();
+    var mission = document.getElementById('missionInput').value.trim();
     if (!mission) return;
-    state.mission = mission; state.responses = {}; state.prompts = generatePrompts(mission);
+    state.mission = mission;
+    state.responses = {};
+    state.prompts = generatePrompts(mission);
+
     document.getElementById('sendBtn').disabled = true;
     document.getElementById('synthesizeBtn').disabled = true;
     document.getElementById('broadcastBtn').disabled = true;
     document.getElementById('synthesisOutput').textContent = 'Deploy a mission to generate synthesis...';
     document.getElementById('synthesisOutput').className = 'synthesis-output';
-    const preview = document.getElementById('promptsPreview');
-    preview.innerHTML = ''; preview.classList.add('visible');
-    const roles = {notebooklm:'Archive', gemini:'Draft', chatgpt:'Critique', grok:'Pulse', deepseek:'Risk', perplexity:'Research'};
-    Object.entries(roles).forEach(([ai, role]) => { const chip = document.createElement('div'); chip.className = 'prompt-chip'; chip.innerHTML = '<span>' + role + ':</span> ' + ai; preview.appendChild(chip); });
-    ['notebooklm','gemini','chatgpt','grok','deepseek','perplexity'].forEach(ai => setCard(ai, 'waiting'));
-    ['grok','deepseek','perplexity'].forEach(ai => { document.getElementById('paste-' + ai).classList.add('visible'); const btn = document.getElementById('copy-' + ai); btn.classList.remove('copied'); btn.textContent = '📋 COPY PROMPT FOR ' + ai.toUpperCase(); });
+
+    var preview = document.getElementById('promptsPreview');
+    preview.innerHTML = '';
+    preview.classList.add('visible');
+    var roles = {notebooklm:'Archive', gemini:'Draft', chatgpt:'Critique', grok:'Pulse', deepseek:'Risk', perplexity:'Research'};
+    Object.keys(roles).forEach(function(ai) {
+      var chip = document.createElement('div');
+      chip.className = 'prompt-chip';
+      chip.innerHTML = '<span>' + roles[ai] + ':</span> ' + ai;
+      preview.appendChild(chip);
+    });
+
+    ['notebooklm','gemini','chatgpt','grok','deepseek','perplexity'].forEach(function(ai) { setCard(ai, 'waiting'); });
+
+    ['grok','deepseek','perplexity'].forEach(function(ai) {
+      document.getElementById('paste-' + ai).classList.add('visible');
+      var btn = document.getElementById('copy-' + ai);
+      btn.classList.remove('copied');
+      btn.textContent = '📋 COPY PROMPT FOR ' + ai.toUpperCase();
+    });
+
     if (document.body.classList.contains('mobile-mode')) {
-      ['notebooklm','gemini','chatgpt'].forEach(ai => { document.getElementById('paste-' + ai).classList.add('visible'); const btn = document.getElementById('copy-' + ai); if (btn) { btn.classList.remove('copied'); btn.textContent = '📋 COPY PROMPT FOR ' + ai.toUpperCase(); } });
+      ['notebooklm','gemini','chatgpt'].forEach(function(ai) {
+        document.getElementById('paste-' + ai).classList.add('visible');
+        var btn = document.getElementById('copy-' + ai);
+        if (btn) { btn.classList.remove('copied'); btn.textContent = '📋 COPY PROMPT FOR ' + ai.toUpperCase(); }
+      });
       setStatus('Mobile mode — copy prompts and paste responses.', 'active');
-      document.getElementById('sendBtn').disabled = false; return;
+      document.getElementById('sendBtn').disabled = false;
+      return;
     }
-    setStatus('Mission deployed. Auto-zone running...', 'active');
-    ['notebooklm','gemini','chatgpt'].forEach(ai => setCard(ai, 'thinking'));
-    await Promise.all(['notebooklm','gemini','chatgpt'].map(ai => runAutoZone(ai)));
+
+    setStatus('Mission deployed. Auto-zone running via proxy...', 'active');
+    ['notebooklm','gemini','chatgpt'].forEach(function(ai) { setCard(ai, 'thinking'); });
+
+    await Promise.all(['notebooklm','gemini','chatgpt'].map(function(ai) { return runAutoZone(ai); }));
     document.getElementById('sendBtn').disabled = false;
   }
+
   async function runAutoZone(ai) {
     try {
-      const text = await claudeCall(state.prompts[ai]);
-      updateCard(ai, text);
+      var response = await fetch(PROXY, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: state.prompts[ai],
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000
+        })
+      });
+      var data = await response.json();
+      if (data.error) throw new Error(data.error);
+      updateCard(ai, data.text);
     } catch(e) {
       setCard(ai, 'waiting', 'Error: ' + e.message + ' — copy prompt and paste manually.');
       document.getElementById('paste-' + ai).classList.add('visible');
-      const btn = document.getElementById('copy-' + ai);
+      var btn = document.getElementById('copy-' + ai);
       if (btn) btn.textContent = '📋 COPY PROMPT FOR ' + ai.toUpperCase();
     }
   }
-  function updateCard(ai, response) { state.responses[ai] = response; setCard(ai, 'done', response); setStatus('Response received: ' + ai, 'success'); checkAllResponses(); }
+
+  function updateCard(ai, response) {
+    state.responses[ai] = response;
+    setCard(ai, 'done', response);
+    setStatus('Response received: ' + ai, 'success');
+    checkAllResponses();
+  }
+
   function checkAllResponses() {
-    const allSix = ['notebooklm','gemini','chatgpt','grok','deepseek','perplexity'].every(ai => state.responses[ai]);
-    if (allSix) { document.getElementById('synthesizeBtn').disabled = false; setStatus('All 6 AIs responded. Ready to synthesize.', 'success'); }
-    else if (['notebooklm','gemini','chatgpt'].every(ai => state.responses[ai])) setStatus('Auto-zone complete. Paste Grok, DeepSeek, Perplexity to continue.', 'success');
+    var allSix = ['notebooklm','gemini','chatgpt','grok','deepseek','perplexity'].every(function(ai) { return !!state.responses[ai]; });
+    if (allSix) {
+      document.getElementById('synthesizeBtn').disabled = false;
+      setStatus('All 6 AIs responded. Ready to synthesize.', 'success');
+    } else {
+      var allAuto = ['notebooklm','gemini','chatgpt'].every(function(ai) { return !!state.responses[ai]; });
+      if (allAuto) setStatus('Auto-zone complete. Paste Grok, DeepSeek, Perplexity to continue.', 'success');
+    }
   }
+
   function copyPrompt(ai) {
-    const prompt = state.prompts[ai]; if (!prompt) return;
-    navigator.clipboard.writeText(prompt).then(() => { const btn = document.getElementById('copy-' + ai); btn.textContent = '✅ COPIED!'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = '📋 COPY PROMPT FOR ' + ai.toUpperCase(); btn.classList.remove('copied'); }, 2000); });
+    var prompt = state.prompts[ai];
+    if (!prompt) return;
+    navigator.clipboard.writeText(prompt).then(function() {
+      var btn = document.getElementById('copy-' + ai);
+      btn.textContent = '✅ COPIED!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = '📋 COPY PROMPT FOR ' + ai.toUpperCase(); btn.classList.remove('copied'); }, 2000);
+    });
   }
-  function handlePaste(ai, value) { if (value.trim().length > 10) { state.responses[ai] = value.trim(); setCard(ai, 'done', value.trim()); checkAllResponses(); } }
+
+  function handlePaste(ai, value) {
+    if (value.trim().length > 10) {
+      state.responses[ai] = value.trim();
+      setCard(ai, 'done', value.trim());
+      checkAllResponses();
+    }
+  }
+
   async function synthesize() {
     document.getElementById('synthesizeBtn').disabled = true;
     document.getElementById('synthesisOutput').textContent = 'Synthesizing all inputs...';
     document.getElementById('synthesisOutput').className = 'synthesis-output';
     setStatus('Synthesizing...', 'active');
-    const prompt = `You are the PMM Project Manager synthesizing inputs from 6 AI agents about this mission: "${state.mission}"\n\nNOTEBOOKLM (Archive): ${state.responses.notebooklm || 'No response'}\nGEMINI (Draft): ${state.responses.gemini || 'No response'}\nCHATGPT (Critique): ${state.responses.chatgpt || 'No response'}\nGROK (Cultural Pulse): ${state.responses.grok || 'No response'}\nDEEPSEEK (Risk Analysis): ${state.responses.deepseek || 'No response'}\nPERPLEXITY (Research): ${state.responses.perplexity || 'No response'}\n\nSynthesize all of this into:\n1. THE FINAL POST (ready to publish, Jack's voice, max 150 words)\n2. KEY INSIGHT (one sentence — what made this land)\n3. RISKS TO WATCH (one sentence from DeepSeek's input)\n\nBe decisive. Ship it.`;
+
+    var prompt = 'You are the PMM Project Manager synthesizing inputs from 6 AI agents about this mission: "' + state.mission + '"\n\n' +
+      'NOTEBOOKLM (Archive): ' + (state.responses.notebooklm || 'No response') + '\n' +
+      'GEMINI (Draft): ' + (state.responses.gemini || 'No response') + '\n' +
+      'CHATGPT (Critique): ' + (state.responses.chatgpt || 'No response') + '\n' +
+      'GROK (Cultural Pulse): ' + (state.responses.grok || 'No response') + '\n' +
+      'DEEPSEEK (Risk Analysis): ' + (state.responses.deepseek || 'No response') + '\n' +
+      'PERPLEXITY (Research): ' + (state.responses.perplexity || 'No response') + '\n\n' +
+      'Synthesize all of this into:\n' +
+      '1. THE FINAL POST (ready to publish, Jack\'s voice, max 150 words)\n' +
+      '2. KEY INSIGHT (one sentence — what made this land)\n' +
+      '3. RISKS TO WATCH (one sentence from DeepSeek\'s input)\n\n' +
+      'Be decisive. Ship it.';
+
     try {
-      state.synthesis = await claudeCall(prompt);
-      document.getElementById('synthesisOutput').textContent = state.synthesis;
+      var response = await fetch(PROXY, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: prompt,
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000
+        })
+      });
+      var data = await response.json();
+      if (data.error) throw new Error(data.error);
+      state.synthesis = data.text;
+      document.getElementById('synthesisOutput').textContent = data.text;
       document.getElementById('synthesisOutput').className = 'synthesis-output has-content';
       document.getElementById('broadcastBtn').disabled = false;
       document.getElementById('synthesizeBtn').disabled = false;
       setStatus('Synthesis complete. Ready to broadcast.', 'success');
-    } catch(e) { document.getElementById('synthesisOutput').textContent = 'Synthesis error: ' + e.message; document.getElementById('synthesizeBtn').disabled = false; setStatus('Synthesis failed: ' + e.message, 'error'); }
+    } catch(e) {
+      document.getElementById('synthesisOutput').textContent = 'Synthesis error: ' + e.message;
+      document.getElementById('synthesizeBtn').disabled = false;
+      setStatus('Synthesis failed: ' + e.message, 'error');
+    }
   }
+
   async function broadcastMission() {
     if (!state.synthesis) return;
-    const broadcastData = { mission: state.mission, synthesis: state.synthesis, responses: state.responses, timestamp: new Date().toISOString() };
-    try { const xhr = new XMLHttpRequest(); xhr.open('POST', 'http://localhost:3747/broadcast', false); xhr.setRequestHeader('Content-Type', 'application/json'); xhr.send(JSON.stringify(broadcastData)); setStatus('Broadcast pushed to PMM tower. ✅', 'success'); }
-    catch(e) { navigator.clipboard.writeText(JSON.stringify(broadcastData, null, 2)); setStatus('Bridge offline — synthesis copied to clipboard.', ''); }
+    var broadcastData = {
+      mission: state.mission,
+      synthesis: state.synthesis,
+      responses: state.responses,
+      timestamp: new Date().toISOString()
+    };
+    try {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'http://localhost:3747/broadcast', false);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(broadcastData));
+      setStatus('Broadcast pushed to PMM tower. ✅', 'success');
+    } catch(e) {
+      navigator.clipboard.writeText(JSON.stringify(broadcastData, null, 2));
+      setStatus('Bridge offline — synthesis copied to clipboard.', '');
+    }
   }
 </script>
 </body>
