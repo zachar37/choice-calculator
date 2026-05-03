@@ -513,11 +513,12 @@ function renderBroadcast(){
 
 // Briefing Strip
 var BRIEFING_GDOC_URL='https://docs.google.com/document/d/1L9VWxFa7O6uOwSJ-nCXC9X-5kKLwkCSVHBhlF3-wdXA/edit';
+var BRIEFING_AUDIO_URL='https://storage.googleapis.com/pmm-briefings/latest_briefing.mp3';
 var briefingAudio=null;
 var briefingPlaying=false;
 function playBriefing(){
   if(!briefingAudio){
-    briefingAudio=new Audio('Briefings/latest_briefing.mp3');
+    briefingAudio=new Audio(BRIEFING_AUDIO_URL);
     briefingAudio.onended=function(){
       briefingPlaying=false;
       document.getElementById('briefingPlayBtn').textContent='▶ PLAY';
