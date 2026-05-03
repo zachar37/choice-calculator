@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Master Mind</title>
+<meta name="apple-mobile-web-app-title" content="Master Mind">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f0eb;--surface:#fff;--surface2:#f7f5f0;--border:#ddd;--border2:#ccc;--accent:#1B1F3B;--text:#1a1a1a;--text2:#555;--text3:#999;--green:#2e7d4f;--yellow:#b8860b;--red:#c0392b;--blue:#2255aa;--gold:#c9a84c;--font:'Syne',sans-serif;--mono:'DM Mono',monospace;}
+:root.dark{--bg:#0a0a0a;--surface:#111;--surface2:#181818;--border:#2a2a2a;--border2:#333;--accent:#c9a84c;--text:#f0f0f0;--text2:#aaa;--text3:#666;--green:#4caf6e;--red:#e05555;--blue:#5b8ee0;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.hdr-left{display:flex;align-items:center;gap:10px;}
+.logo{width:30px;height:30px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#1B1F3B;flex-shrink:0;}
+.logo-text{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);}
+.logo-sub{font-size:9px;color:var(--text3);font-family:var(--mono);margin-top:1px;}
+.mode-btns{display:flex;gap:4px;}
+.mbtn{background:none;border:1px solid var(--border2);color:var(--text3);font-family:var(--mono);font-size:9px;padding:5px 10px;cursor:pointer;letter-spacing:.08em;transition:all .2s;}
+.mbtn.active{border-color:var(--accent);color:var(--accent);}
+.main{padding:18px;max-width:900px;margin:0 auto;}
+.datebar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.datestr{font-family:var(--mono);font-size:10px;color:var(--text3);}
+.sbadge{font-family:var(--mono);font-size:9px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);color:var(--gold);padding:4px 10px;}
+.slabel{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;}
+.blockers{display:flex;flex-direction:column;gap:5px;margin-bottom:20px;}
+.blocker{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--red);cursor:pointer;}
+.blocker.done{border-left-color:var(--green);opacity:.5;}
+.blocker.done .bt{text-decoration:line-through;}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;}
+.blocker.done .bdot{background:var(--green);}
+.bv{font-family:var(--mono);font-size:9px;color:var(--text3);width:80px;flex-shrink:0;}
+.bt{font-size:12px;color:var(--text2);flex:1;}
+.br{font-family:var(--mono);font-size:9px;color:var(--text3);}
+.ventures{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+@media(max-width:540px){.ventures{grid-template-columns:1fr;}}
+.venture{background:var(--surface);border:1px solid var(--border);padding:14px;position:relative;overflow:hidden;}
+.venture::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.v-ll::before{background:var(--gold);}
+.v-ex::before{background:#c87090;}
+.v-al::before{background:var(--blue);}
+.v-bz::before{background:var(--green);}
+.vh{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;}
+.vn{font-size:12px;font-weight:700;}
+.vs{font-family:var(--mono);font-size:8px;letter-spacing:.1em;padding:3px 7px;text-transform:uppercase;}
+.s-live{background:rgba(46,125,79,.1);color:var(--green);border:1px solid rgba(46,125,79,.25);}
+.s-build{background:rgba(34,85,170,.1);color:var(--blue);border:1px solid rgba(34,85,170,.25);}
+.s-ready{background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.25);}
+.s-active{background:rgba(184,134,11,.1);color:var(--yellow);border:1px solid rgba(184,134,11,.25);}
+.vtag{font-size:9px;color:var(--text3);font-family:var(--mono);margin-bottom:10px;}
+.vmet{display:flex;gap:14px;margin-bottom:10px;}
+.vmv{font-size:15px;font-weight:700;}
+.vml{font-size:8px;color:var(--text3);font-family:var(--mono);margin-top:1px;}
+.vnl{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;}
+.vnt{font-size:11px;color:var(--text2);line-height:1.5;}
+.actions{display:flex;flex-direction:column;gap:5px;margin-bottom:20px;}
+.aitem{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);cursor:pointer;}
+.aitem.done{opacity:.4;}
+.aitem.done .at{text-decoration:line-through;}
+.ach{width:15px;height:15px;border:1px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--green);}
+.aitem.done .ach{background:rgba(46,125,79,.1);border-color:var(--green);}
+.at{font-size:12px;color:var(--text2);flex:1;}
+.av{font-family:var(--mono);font-size:9px;color:var(--text3);}
+.logwrap{background:var(--surface);border:1px solid var(--border);margin-bottom:20px;}
+.loghdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);}
+.logtitle{font-size:12px;font-weight:700;}
+.logbtn{font-family:var(--mono);font-size:9px;color:var(--gold);background:none;border:1px solid rgba(201,168,76,.3);padding:5px 12px;cursor:pointer;}
+.logentries{max-height:280px;overflow-y:auto;}
+.logentry{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);}
+.logentry:last-child{border-bottom:none;}
+.logdate{font-family:var(--mono);font-size:9px;color:var(--text3);white-space:nowrap;width:76px;flex-shrink:0;padding-top:2px;}
+.logbody{flex:1;}
+.logtag{font-family:var(--mono);font-size:8px;padding:2px 6px;margin-right:3px;display:inline-block;margin-bottom:5px;}
+.tag-ll{background:rgba(201,168,76,.1);color:var(--gold);}
+.tag-exhale{background:rgba(200,112,144,.1);color:#c87090;}
+.tag-alex{background:rgba(34,85,170,.1);color:var(--blue);}
+.tag-biz{background:rgba(46,125,79,.1);color:var(--green);}
+.tag-system{background:rgba(160,160,160,.1);color:var(--text3);}
+.logbuilt{font-size:11px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.logdetail{font-size:10px;color:var(--text3);line-height:1.6;}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;align-items:center;justify-content:center;padding:16px;}
+.overlay.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border2);width:100%;max-width:480px;overflow:hidden;max-height:90vh;display:flex;flex-direction:column;}
+.modal-hdr{background:var(--accent);padding:16px 20px;flex-shrink:0;}
+.modal-title{font-size:13px;font-weight:700;color:var(--surface);letter-spacing:.06em;}
+.modal-sub{font-size:10px;color:rgba(255,255,255,.6);font-family:var(--mono);margin-top:3px;}
+.modal-body{padding:18px;overflow-y:auto;flex:1;}
+.step-lbl{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+.step-num{width:16px;height:16px;background:var(--gold);color:#1B1F3B;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono);}
+.hint-box{background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.2);padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--text2);line-height:1.7;font-family:var(--mono);}
+.hint-box code{background:rgba(201,168,76,.15);padding:1px 6px;color:var(--gold);border-radius:2px;}
+.ftextarea,.finput,.fselect{width:100%;background:var(--surface2);border:1px solid var(--border2);color:var(--text);font-family:var(--font);font-size:13px;padding:9px 11px;outline:none;}
+.ftextarea:focus,.finput:focus{border-color:var(--accent);}
+.ftextarea{resize:vertical;}
+.fselect{height:74px;}
+.fselect option{background:var(--surface);}
+.flabel{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:5px;}
+.fhint{font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:4px;}
+.divider{height:1px;background:var(--border);margin:14px 0;}
+.field{margin-bottom:12px;}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;padding:14px 18px;border-top:1px solid var(--border);flex-shrink:0;}
+.bclear{background:none;border:1px solid var(--border2);color:var(--text3);font-family:var(--mono);font-size:9px;padding:8px 14px;cursor:pointer;}
+.bsave{background:var(--accent);border:none;color:var(--surface);font-family:var(--font);font-size:11px;font-weight:700;padding:8px 20px;cursor:pointer;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--border2);}
+.broadcast{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;}
+@media(max-width:540px){.broadcast{grid-template-columns:1fr;}}
+.bcast{background:var(--surface);border:1px solid var(--border);padding:14px;position:relative;overflow:hidden;}
+.bcast::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);}
+.bcast-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.bcast-name{font-size:12px;font-weight:700;}
+.bcast-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;}
+.bcast-dot.unknown{background:var(--text3);}
+.bcast-sub{font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:10px;}
+.bcast-btn{font-family:var(--mono);font-size:9px;color:var(--accent);background:none;border:1px solid var(--border2);padding:5px 10px;cursor:pointer;width:100%;text-align:center;}
+.bcast-btn:hover{border-color:var(--accent);}
+
+/* Briefing Strip */
+.briefing-strip{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--gold);padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:14px;}
+.briefing-icon{font-size:18px;flex-shrink:0;}
+.briefing-text{flex:1;font-family:var(--mono);font-size:10px;color:var(--text2);line-height:1.6;}
+.briefing-label{font-size:9px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px;}
+.briefing-play{background:var(--gold);border:none;color:#1B1F3B;font-family:var(--mono);font-size:9px;font-weight:700;padding:8px 14px;cursor:pointer;flex-shrink:0;letter-spacing:.08em;}
+.briefing-play:hover{opacity:.85;}
+
+/* Tools Row */
+.tools-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.tool-btn{flex:1;min-width:140px;background:var(--surface);border:1px solid var(--border);padding:12px 10px;cursor:pointer;text-align:left;transition:border-color .2s;}
+.tool-btn:hover{border-color:var(--accent);}
+.tool-icon{font-size:16px;margin-bottom:6px;}
+.tool-name{font-size:11px;font-weight:700;color:var(--text);display:block;}
+.tool-sub{font-family:var(--mono);font-size:8px;color:var(--text3);margin-top:2px;display:block;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="logo">PM</div>
+    <div>
+      <div class="logo-text">Project Master Mind</div>
+      <div class="logo-sub">All Ventures — One Brain</div>
+    </div>
+  </div>
+  <div class="mode-btns">
+    <button class="mbtn active" id="btn-light" onclick="setMode('light')">LIGHT</button>
+    <button class="mbtn" id="btn-dark" onclick="setMode('dark')">DARK</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="datebar">
+    <div class="datestr" id="dateStr"></div>
+    <div class="sbadge" id="sessionBadge">SESSION 1</div>
+  </div>
+
+  <div class="slabel">Active Blockers</div>
+  <div class="blockers" id="blockerList"></div>
+
+  <div class="slabel">Morning Briefing</div>
+  <div class="briefing-strip" id="briefingStrip">
+    <div class="briefing-icon">🎙</div>
+    <div style="flex:1">
+      <div class="briefing-label">Today's Intel — Jack</div>
+      <div class="briefing-text" id="briefingPreview">Loading briefing...</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+      <button class="briefing-play" id="briefingPlayBtn" onclick="playBriefing()">▶ PLAY</button>
+      <button class="briefing-play" onclick="openBriefingDoc()" style="background:transparent;border:1px solid var(--gold);color:var(--gold);">📄 OPEN DOC</button>
+    </div>
+  </div>
+
+  <div class="slabel">Ventures</div>
+  <div class="ventures">
+    <div class="venture v-ll">
+      <div class="vh"><div class="vn">The Lost Letters Co.</div><div class="vs s-active">Active</div></div>
+      <div class="vtag">Sent long ago. Took a while to find you.</div>
+      <div class="vmet">
+        <div><div class="vmv">3</div><div class="vml">Months Live</div></div>
+        <div><div class="vmv">16</div><div class="vml">Letters</div></div>
+        <div><div class="vmv">2</div><div class="vml">Tracks</div></div>
+      </div>
+      <div class="vnl">Next Action</div>
+      <div class="vnt">Month 4 content — both tracks</div>
+    </div>
+    <div class="venture v-ex">
+      <div class="vh"><div class="vn">The Strength to Exhale</div><div class="vs s-build">Building</div></div>
+      <div class="vtag">@TheStrengthtoExhale — Kelly + Jack</div>
+      <div class="vmet">
+        <div><div class="vmv">2</div><div class="vml">AI Voices</div></div>
+        <div><div class="vmv">30</div><div class="vml">Ideas</div></div>
+        <div><div class="vmv">1</div><div class="vml">Post Live</div></div>
+      </div>
+      <div class="vnl">Next Action</div>
+      <div class="vnt">Lock Kelly ElevenLabs voice → first video</div>
+    </div>
+    <div class="venture v-al">
+      <div class="vh"><div class="vn">Alex — AI Receptionist</div><div class="vs s-live">Live</div></div>
+      <div class="vtag">Real estate AI — chat + SMS + web search</div>
+      <div class="vmet">
+        <div><div class="vmv">$297</div><div class="vml">Per Agent</div></div>
+        <div><div class="vmv">2</div><div class="vml">Channels</div></div>
+        <div><div class="vmv">0</div><div class="vml">Clients</div></div>
+      </div>
+      <div class="vnl">Next Action</div>
+      <div class="vnt">Google Calendar integration → first outreach</div>
+    </div>
+    <div class="venture v-bz">
+      <div class="vh"><div class="vn">AI Local Biz Marketing</div><div class="vs s-ready">Ready</div></div>
+      <div class="vtag">AI Guilt hook → $1K/mo packages</div>
+      <div class="vmet">
+        <div><div class="vmv">$1K</div><div class="vml">Base/mo</div></div>
+        <div><div class="vmv">9</div><div class="vml">Verticals</div></div>
+        <div><div class="vmv">0</div><div class="vml">Clients</div></div>
+      </div>
+      <div class="vnl">Next Action</div>
+      <div class="vnt">Build Brentwood lead list → AI Trust Audit outreach</div>
+    </div>
+  </div>
+
+  <div class="slabel">Next Session Actions</div>
+  <div class="actions" id="actionList"></div>
+
+  <div class="slabel">Broadcast Station</div>
+  <div class="broadcast" id="broadcastRow"></div>
+
+  <div class="slabel">Tools</div>
+  <div class="tools-row" id="toolsRow"></div>
+
+  <div class="slabel">Session Log</div>
+  <div class="logwrap">
+    <div class="loghdr">
+      <div class="logtitle">Build History</div>
+      <button class="logbtn" onclick="openModal()">+ LOG SESSION</button>
+    </div>
+    <div class="logentries" id="logEntries"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-title">Log This Session</div>
+      <div class="modal-sub">Paste Claude's summary — fields fill automatically</div>
+    </div>
+    <div class="modal-body">
+
+      <div class="step-lbl"><div class="step-num">1</div>Ask Claude at end of every chat:</div>
+      <div class="hint-box">
+        Type: <code>Give me the session summary for the dashboard</code><br>
+        Claude replies in clean format. Copy the whole thing and paste below.
+      </div>
+
+      <div class="step-lbl"><div class="step-num">2</div>Paste Claude's summary here</div>
+      <textarea class="ftextarea" id="inp-paste" rows="6" placeholder="Paste here... fields below auto-fill." oninput="parseSummary(this.value)"></textarea>
+
+      <div class="divider"></div>
+
+      <div class="step-lbl"><div class="step-num">3</div>Review and save</div>
+
+      <div class="field">
+        <label class="flabel">What was built</label>
+        <input class="finput" id="inp-built" type="text" placeholder="e.g. Alex Google Calendar integration">
+      </div>
+      <div class="field">
+        <label class="flabel">Details / what changed</label>
+        <textarea class="ftextarea" id="inp-detail" rows="3" placeholder="Key changes, decisions, blockers killed..."></textarea>
+      </div>
+      <div class="field">
+        <label class="flabel">Ventures <span style="font-weight:400;color:var(--text3)">(hold Ctrl/Cmd for multiple)</span></label>
+        <select class="fselect" id="inp-venture" multiple>
+          <option value="ll">Lost Letters Co.</option>
+          <option value="exhale">Strength to Exhale</option>
+          <option value="alex">Alex</option>
+          <option value="biz">AI Local Biz</option>
+          <option value="system">System / Master Mind</option>
+        </select>
+        <div class="fhint">Auto-detected from your paste. Adjust if needed.</div>
+      </div>
+
+    </div>
+    <div class="modal-actions">
+      <button class="bclear" onclick="closeModal()">CANCEL</button>
+      <button class="bsave" onclick="saveSession()">SAVE SESSION</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Storage
+function load(k,d){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+
+// Default data
+const DB=[
+  {id:1,venture:'LOST LETTERS',text:'Era decision — needed before Month 4 content',done:false},
+  {id:2,venture:'ALEX',text:'Google Calendar integration — core booking feature',done:false},
+  {id:3,venture:'EXHALE',text:'Kelly voice direction in ElevenLabs — unblocks first video',done:false},
+];
+const DA=[
+  {id:1,text:'Google Calendar API into Alex booking flow',venture:'ALEX',done:false},
+  {id:2,text:'First Brentwood agent outreach — demo Alex on listing',venture:'ALEX',done:false},
+  {id:3,text:'Lock Kelly ElevenLabs voice settings',venture:'EXHALE',done:false},
+  {id:4,text:'Build Brentwood lead list (Gemini + Manus AI)',venture:'BIZ',done:false},
+  {id:5,text:'Deploy dashboard to Netlify — Android home screen',venture:'SYSTEM',done:false},
+];
+const DL=[{
+  id:1,date:'Mar 26 2026',
+  built:'Project Master Mind — full consolidation + Alex live',
+  detail:'All ventures unified. Alex live with web search, trained on Stockton listing. Dashboard built with session tracking.',
+  ventures:['ll','exhale','alex','biz','system']
+},{
+  id:2,date:'Fri Mar 27 2026',
+  built:'MCP filesystem + terminal alias system — full local file access confirmed',
+  detail:'Verified filesystem MCP connected (scoped to _MASTER_PROJECT_FOLDER). Read TOOLS.html — 5 tabs confirmed: Master Posting Studio, Quote Card Generator, Comment Intelligence x2, Quote Card V3. Built terminal aliases for all HTML files: tools, dashboard, studio, quotecards, seo, firecrawl, carousel, avatar, elevenlabs, softfem, exhalepost. Added openhtml keyword function for any future files. Enabled Claude in Chrome file:// access.',
+  ventures:['system']
+},{id:3,date:'Tue Apr 1 2026',
+  built:'Claude Desktop MCP + Cowork troubleshooting session',
+  detail:'Diagnosed MCP tool connectivity between Claude Desktop and Cowork. Confirmed _pending_task.json lives at System DOCS/_pending_task.json. Verified filesystem tool scope and dashboard write workflow. Focused on stabilizing the local-file to Drive broadcast pipeline.',
+  ventures:['system']
+},{id:4,date:'Tue Apr 1 2026',
+  built:'Full system test + dashboard click-to-Claude wired end-to-end',
+  detail:'Fresh reboot test passed. Task bridge confirmed running on 3747, writing to System/. LaunchAgent loaded. Dashboard actions and blockers now fire task to bridge AND open claude.ai/new with task pre-filled via ?q= param. Hit send to start session. All systems operational.',
+  ventures:['system']
+}];
+
+let blockers=load('pmm_b',DB);
+let actions=load('pmm_a',DA);
+let sessions=load('pmm_s',DL);
+// Merge any default sessions not yet in localStorage
+DL.forEach(d=>{if(!sessions.find(s=>s.id===d.id)){sessions=[...sessions,d];save('pmm_s',sessions);}});
+
+// Date
+function fmtDate(d){
+  const D=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return D[d.getDay()]+' '+M[d.getMonth()]+' '+d.getDate()+' '+d.getFullYear();
+}
+document.getElementById('dateStr').textContent=fmtDate(new Date());
+document.getElementById('sessionBadge').textContent='SESSION '+sessions.length;
+
+// Blockers
+function renderBlockers(){
+  document.getElementById('blockerList').innerHTML=blockers.map(b=>`
+    <div class="blocker${b.done?' done':''}" onclick="toggleB(${b.id})">
+      <div class="bdot"></div>
+      <div class="bv">${b.venture}</div>
+      <div class="bt">${b.text}</div>
+      <div class="br">${b.done?'✓ RESOLVED':'tap to resolve'}</div>
+    </div>`).join('');
+}
+function toggleB(id){
+  var b=blockers.find(function(b){return b.id===id;});
+  if(b&&!b.done){launchClaude(b.text,b.venture);}
+  blockers=blockers.map(function(b){return b.id===id?Object.assign({},b,{done:!b.done}):b;});
+  save('pmm_b',blockers);
+  renderBlockers();
+}
+
+// Actions
+function renderActions(){
+  document.getElementById('actionList').innerHTML=actions.map(a=>`
+    <div class="aitem${a.done?' done':''}" onclick="toggleA(${a.id})">
+      <div class="ach">${a.done?'✓':''}</div>
+      <div class="at">${a.text}</div>
+      <div class="av">${a.venture}</div>
+    </div>`).join('');
+}
+function launchClaude(task,venture){
+  var xhr=new XMLHttpRequest();
+  xhr.open('POST','http://127.0.0.1:3747/task',false);
+  xhr.setRequestHeader('Content-Type','application/json');
+  try{xhr.send(JSON.stringify({task:task,venture:venture,type:'action',status:'pending'}));}catch(e){}
+  var msg='OK let\'s work on: '+task+' — '+venture;
+  window.open('https://claude.ai/new?q='+encodeURIComponent(msg),'_blank');
+}
+function toggleA(id){
+  var a=actions.find(function(a){return a.id===id;});
+  if(a&&!a.done){launchClaude(a.text,a.venture);}
+  actions=actions.map(function(a){return a.id===id?Object.assign({},a,{done:!a.done}):a;});
+  save('pmm_a',actions);
+  renderActions();
+}
+
+// Log
+const TAGS={ll:'Lost Letters',exhale:'Exhale',alex:'Alex',biz:'AI Biz',system:'System'};
+function renderLog(){
+  const el=document.getElementById('logEntries');
+  if(!sessions.length){el.innerHTML='<div style="padding:24px;text-align:center;font-size:12px;color:var(--text3)">No sessions yet. Tap + LOG SESSION after each chat.</div>';return;}
+  el.innerHTML=[...sessions].reverse().map(s=>`
+    <div class="logentry">
+      <div class="logdate">${s.date}</div>
+      <div class="logbody">
+        <div style="margin-bottom:5px">${(s.ventures||[]).map(v=>`<span class="logtag tag-${v}">${TAGS[v]||v}</span>`).join('')}</div>
+        <div class="logbuilt">${s.built}</div>
+        <div class="logdetail">${s.detail}</div>
+      </div>
+    </div>`).join('');
+}
+
+// Parse summary — extracts content FROM code blocks first, then strips markdown
+function parseSummary(raw){
+  if(!raw.trim()) return;
+
+  // Step 1: Pull content out of ``` code blocks before stripping them
+  const codeBlocks=[];
+  raw.replace(/```(?:\w+)?\n?([\s\S]*?)```/g,(_,c)=>{codeBlocks.push(c.trim());});
+
+  // Step 2: Strip markdown from full text
+  let txt=raw
+    .replace(/```[\s\S]*?```/g,' ')
+    .replace(/`([^`]*)`/g,'$1')
+    .replace(/\*{1,3}([^*\n]*)\*{1,3}/g,'$1')
+    .replace(/_{1,2}([^_\n]*)_{1,2}/g,'$1')
+    .replace(/^#{1,6}\s*/gm,'')
+    .replace(/^[-•✅➤→►]\s*/gm,'')
+    .replace(/\r/g,'').replace(/\n{3,}/g,'\n\n').trim();
+
+  // Step 3: Extract BUILT
+  // Priority: inline "BUILT: value" → first code block → first non-header line
+  let built='';
+  let m=txt.match(/(?:WHAT WAS BUILT|BUILT)\s*[:\-—]\s*([^\n]{8,120})/i);
+  if(m) built=m[1].trim();
+  if(!built&&codeBlocks.length>0){
+    const fl=codeBlocks[0].split('\n').map(l=>l.trim()).filter(l=>l&&!/^[A-Z\s]{4,}$/.test(l));
+    built=fl[0]||'';
+  }
+  if(!built){
+    const lines=txt.split('\n').map(l=>l.trim()).filter(Boolean);
+    built=lines.find(l=>l.length>8&&!/^(SESSION|WHAT|OPEN|NEXT|BLOCKER|AGENT|VENTURE|BUILT|CHANGED)/i.test(l))||'';
+  }
+
+  // Step 4: Extract DETAIL
+  // Priority: inline "CHANGED: value" → second code block → section text
+  let detail='';
+  m=txt.match(/(?:DETAILS?|WHAT CHANGED|CHANGED)\s*[:\-—]\s*([^\n]{5,})/i);
+  if(m) detail=m[1].trim();
+  if(!detail&&codeBlocks.length>1){
+    detail=codeBlocks[1].split('\n').map(l=>l.trim()).filter(Boolean).join(' ');
+  }
+  if(!detail){
+    m=txt.match(/WHAT CHANGED[^\n]*\n+([\s\S]*?)(?:WHAT.S STILL|NEXT SESSION|AGENT OPP|$)/i);
+    if(m) detail=m[1].replace(/\n/g,' ').trim();
+  }
+
+  document.getElementById('inp-built').value=built.slice(0,120);
+  document.getElementById('inp-detail').value=detail.slice(0,400);
+
+  // Step 5: Detect ventures
+  const lower=raw.toLowerCase();
+  const kw={
+    ll:['lost letters','letter zero','kelly track','marcus track','exhale correspondence','production bible','caveat'],
+    exhale:['strength to exhale','thestrengthtoexhale','content calendar','reels','kelly voice','jack voice','elevenlabs','faceless'],
+    alex:['alex','receptionist','calendly','twilio','listing','realtor','brentwood','app.py','booking'],
+    biz:['local biz','ai guilt','trust audit','gohighlevel','brentwood smiles','lead list','outreach'],
+    system:['master mind','dashboard','os','consolidat','paperclip','netlify','firebase','session log','project']
+  };
+  const sel=document.getElementById('inp-venture');
+  Array.from(sel.options).forEach(o=>{
+    o.selected=(kw[o.value]||[]).some(k=>lower.includes(k));
+  });
+}
+
+// Modal
+function openModal(){document.getElementById('overlay').classList.add('open');}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+  ['inp-paste','inp-built','inp-detail'].forEach(id=>document.getElementById(id).value='');
+  Array.from(document.getElementById('inp-venture').options).forEach(o=>o.selected=false);
+}
+function saveSession(){
+  const built=document.getElementById('inp-built').value.trim();
+  if(!built){alert('Please add a title — what was built this session?');return;}
+  const detail=document.getElementById('inp-detail').value.trim();
+  const ventures=Array.from(document.getElementById('inp-venture').selectedOptions).map(o=>o.value);
+  sessions=[...sessions,{id:Date.now(),date:fmtDate(new Date()),built,detail,ventures}];
+  save('pmm_s',sessions);
+  document.getElementById('sessionBadge').textContent='SESSION '+sessions.length;
+  renderLog();
+  closeModal();
+}
+
+// Mode
+function setMode(m){
+  document.documentElement.className=m==='dark'?'dark':'';
+  document.getElementById('btn-light').classList.toggle('active',m==='light');
+  document.getElementById('btn-dark').classList.toggle('active',m==='dark');
+  save('pmm_mode',m);
+}
+setMode(load('pmm_mode','light'));
+
+// Broadcast Station
+function renderBroadcast(){
+  var tools=[
+    {name:'Google Drive',sub:'Auto-sync — broadcast pipeline',dot:'green',btn:'Open Drive',url:'https://drive.google.com'},
+    {name:'Gemini',sub:'First drafts — generative AI',dot:'green',btn:'Open Gemini',url:'https://gemini.google.com'},
+    {name:'NotebookLM',sub:'Archive — research intelligence',dot:'green',btn:'Open NotebookLM',url:'https://notebooklm.google.com'}
+  ];
+  var html='';
+  for(var i=0;i<tools.length;i++){
+    var t=tools[i];
+    html+='<div class="bcast">';
+    html+='<div class="bcast-hdr"><div class="bcast-name">'+t.name+'</div><div class="bcast-dot"></div></div>';
+    html+='<div class="bcast-sub">'+t.sub+'</div>';
+    html+='<button class="bcast-btn" onclick="window.open(\''+t.url+'\',\'_blank\')">'+t.btn+' →</button>';
+    html+='</div>';
+  }
+  document.getElementById('broadcastRow').innerHTML=html;
+}
+
+// Briefing Strip
+var BRIEFING_GDOC_URL='https://docs.google.com/document/d/1L9VWxFa7O6uOwSJ-nCXC9X-5kKLwkCSVHBhlF3-wdXA/edit';
+var briefingAudio=null;
+var briefingPlaying=false;
+function playBriefing(){
+  if(!briefingAudio){
+    briefingAudio=new Audio('Briefings/latest_briefing.mp3');
+    briefingAudio.onended=function(){
+      briefingPlaying=false;
+      document.getElementById('briefingPlayBtn').textContent='▶ PLAY';
+    };
+  }
+  var btn=document.getElementById('briefingPlayBtn');
+  if(briefingPlaying){
+    briefingAudio.pause();
+    briefingPlaying=false;
+    btn.textContent='▶ PLAY';
+  } else {
+    briefingAudio.play();
+    briefingPlaying=true;
+    btn.textContent='⏸ PAUSE';
+  }
+}
+function openBriefingDoc(){window.open(BRIEFING_GDOC_URL,'_blank');}
+function renderBriefingStrip(){
+  fetch('http://127.0.0.1:3747/session-start')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var lines=(d.latest_briefing||'').split('\n').filter(function(l){return l.trim();});
+      var preview=lines.slice(0,2).join(' ');
+      document.getElementById('briefingPreview').textContent=preview||'No briefing yet — runs at 7:30 AM.';
+    })
+    .catch(function(){document.getElementById('briefingPreview').textContent='Bridge offline — start task_bridge.js';});
+}
+
+// Tools Row
+function renderToolsRow(){
+  var tools=[
+    {icon:'🎙',name:'Morning Briefing',sub:'Google Doc',url:BRIEFING_GDOC_URL},
+    {icon:'📖',name:'Wisdom File',sub:'john_WisdomFile-1.html',url:'_Tools/john_WisdomFile-1.html'},
+    {icon:'📡',name:'Signal Bus',sub:'pmm_SignalBus.html',url:'_Tools/PMM/pmm_SignalBus.html'},
+    {icon:'🤖',name:'Multi-AI Command',sub:'pmm_MultiAI_CommandCenter.html',url:'pmm_MultiAI_CommandCenter.html'},
+    {icon:'🧩',name:'Problem Solver',sub:'localhost:3747',url:'http://localhost:3747/problem-solver'},
+    {icon:'📶',name:'Broadcast Raw',sub:'live signal — plain text',url:'https://pmm-broadcast-tower-264350494748.us-central1.run.app/raw'}
+  ];
+  var html='';
+  for(var i=0;i<tools.length;i++){
+    var t=tools[i];
+    html+='<button class="tool-btn" onclick="window.open(\''+t.url+'\',\'_blank\')">';
+    html+='<div class="tool-icon">'+t.icon+'</div>';
+    html+='<span class="tool-name">'+t.name+'</span>';
+    html+='<span class="tool-sub">'+t.sub+'</span>';
+    html+='</button>';
+  }
+  document.getElementById('toolsRow').innerHTML=html;
+}
+
+// Init
+renderBlockers();renderActions();renderBroadcast();renderLog();renderBriefingStrip();renderToolsRow();
+</script>
+</body>
+</html>
