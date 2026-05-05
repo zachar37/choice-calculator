@@ -7,33 +7,131 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #c9a84c; --gold-dim: #8a6e2f; --gold-glow: rgba(201,168,76,0.15);
-    --bg: #0a0a0a; --surface: #111111; --surface2: #1a1a1a; --border: #222222;
-    --text: #e8e8e8; --text-dim: #666; --text-mid: #999;
-    --green: #4caf7d; --green-dim: rgba(76,175,125,0.15);
-    --red: #e05555; --blue: #4a9eff; --orange: #ff8c42;
+    --gold: #c9a84c;
+    --gold-dim: #8a6e2f;
+    --gold-glow: rgba(201,168,76,0.15);
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #222222;
+    --text: #e8e8e8;
+    --text-dim: #666;
+    --text-mid: #999;
+    --green: #4caf7d;
+    --green-dim: rgba(76,175,125,0.15);
+    --red: #e05555;
+    --blue: #4a9eff;
+    --purple: #9b6dff;
+    --orange: #ff8c42;
   }
-  .light { --bg: #f2f0eb; --surface: #ffffff; --surface2: #f7f5f0; --border: #ddd; --text: #111; --text-dim: #aaa; --text-mid: #666; --gold-glow: rgba(201,168,76,0.1); }
+  .light {
+    --bg: #f2f0eb;
+    --surface: #ffffff;
+    --surface2: #f7f5f0;
+    --border: #ddd;
+    --text: #111;
+    --text-dim: #aaa;
+    --text-mid: #666;
+    --gold-glow: rgba(201,168,76,0.1);
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; min-height: 100vh; transition: background 0.3s, color 0.3s; }
-  header { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+  }
   .logo { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--gold); letter-spacing: 3px; }
   .header-title { font-size: 15px; font-weight: 700; letter-spacing: 1px; }
   .header-right { display: flex; gap: 12px; align-items: center; }
-  .toggle-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text-mid); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; padding: 6px 14px; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
+  .toggle-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-mid);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 6px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
   .toggle-btn:hover { border-color: var(--gold); color: var(--gold); }
-  .mission-zone { padding: 32px; border-bottom: 1px solid var(--border); }
+  .context-bar {
+    margin: 12px 32px 0;
+    padding: 8px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .context-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-dim); flex-shrink: 0; }
+  .context-dot.loaded { background: var(--green); box-shadow: 0 0 5px var(--green); }
+  .context-dot.loading { background: var(--gold); animation: pulse 1s infinite; }
+  .context-dot.error { background: var(--red); }
+  .mission-zone { padding: 20px 32px 32px; border-bottom: 1px solid var(--border); }
   .zone-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
   .mission-input-wrap { display: flex; gap: 12px; align-items: flex-start; }
-  textarea { flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: 'DM Mono', monospace; font-size: 13px; padding: 16px; resize: vertical; min-height: 80px; border-radius: 2px; transition: border-color 0.2s; outline: none; }
+  textarea {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    padding: 16px;
+    resize: vertical;
+    min-height: 80px;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
   textarea:focus { border-color: var(--gold); }
   textarea::placeholder { color: var(--text-dim); }
-  .send-btn { background: var(--gold); color: #000; border: none; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 2px; padding: 16px 28px; cursor: pointer; border-radius: 2px; transition: all 0.2s; white-space: nowrap; }
+  .send-btn {
+    background: var(--gold);
+    color: #000;
+    border: none;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 2px;
+    padding: 16px 28px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
   .send-btn:hover { background: #e0bc5a; transform: translateY(-1px); }
   .send-btn:disabled { background: var(--gold-dim); cursor: not-allowed; transform: none; }
   .prompts-preview { margin-top: 16px; display: none; gap: 8px; flex-wrap: wrap; }
   .prompts-preview.visible { display: flex; }
-  .prompt-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 2px; padding: 6px 12px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-mid); }
+  .prompt-chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 6px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-mid);
+  }
   .prompt-chip span { color: var(--gold); }
   .grid-section { padding: 32px; }
   .grid-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
@@ -41,53 +139,152 @@
   .auto-badge { background: var(--green-dim); border: 1px solid var(--green); color: var(--green); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; padding: 3px 8px; border-radius: 2px; }
   .paste-badge { background: rgba(74,158,255,0.1); border: 1px solid var(--blue); color: var(--blue); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; padding: 3px 8px; border-radius: 2px; }
   .ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .ai-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 20px; transition: border-color 0.3s; position: relative; overflow: hidden; }
-  .ai-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--card-color, var(--border)); }
+  .ai-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    transition: border-color 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .ai-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--card-color, var(--border)); transition: opacity 0.3s; }
   .ai-card.active { border-color: var(--card-color, var(--gold)); }
-  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
   .ai-name { font-weight: 700; font-size: 14px; letter-spacing: 0.5px; }
   .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-dim); transition: background 0.3s; }
   .status-dot.online { background: var(--green); box-shadow: 0 0 6px var(--green); }
   .status-dot.thinking { background: var(--gold); box-shadow: 0 0 6px var(--gold); animation: pulse 1s infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-  .ai-role { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-dim); margin-bottom: 6px; letter-spacing: 0.5px; }
-  .ai-task { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); margin-bottom: 12px; font-style: italic; min-height: 14px; }
-  .response-area { background: var(--surface2); border: 1px solid var(--border); border-radius: 2px; padding: 12px; min-height: 80px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-mid); line-height: 1.6; transition: all 0.3s; white-space: pre-wrap; word-break: break-word; }
+  .ai-role { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-dim); margin-bottom: 14px; letter-spacing: 0.5px; }
+  .response-area {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 12px;
+    min-height: 80px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mid);
+    line-height: 1.6;
+    transition: all 0.3s;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
   .response-area.has-content { color: var(--text); border-color: var(--card-color, var(--border)); }
   .response-area.loading { color: var(--gold); }
   .paste-area { margin-top: 10px; display: none; }
   .paste-area.visible { display: block; }
-  .copy-prompt-btn { width: 100%; background: transparent; border: 1px dashed var(--border); color: var(--text-dim); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; padding: 8px; cursor: pointer; border-radius: 2px; transition: all 0.2s; margin-bottom: 8px; }
+  .copy-prompt-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    margin-bottom: 8px;
+  }
   .copy-prompt-btn:hover { border-color: var(--blue); color: var(--blue); }
   .copy-prompt-btn.copied { border-color: var(--green); color: var(--green); }
-  .paste-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: 'DM Mono', monospace; font-size: 11px; padding: 10px; border-radius: 2px; resize: none; height: 70px; outline: none; transition: border-color 0.2s; }
+  .paste-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 10px;
+    border-radius: 2px;
+    resize: none;
+    height: 70px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
   .paste-input:focus { border-color: var(--blue); }
   .paste-input::placeholder { color: var(--text-dim); }
   .synthesis-zone { margin: 0 32px 32px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
   .synthesis-header { background: var(--surface); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
   .synthesis-title { font-size: 13px; font-weight: 700; letter-spacing: 1px; }
-  .synthesize-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; padding: 8px 16px; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
+  .synthesize-btn {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
   .synthesize-btn:hover { background: var(--gold-glow); }
   .synthesize-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .synthesis-output { padding: 20px; font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.8; color: var(--text-mid); min-height: 120px; white-space: pre-wrap; }
   .synthesis-output.has-content { color: var(--text); }
   .broadcast-row { padding: 0 32px 32px; display: flex; gap: 12px; justify-content: flex-end; }
-  .broadcast-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 3px; padding: 12px 24px; cursor: pointer; border-radius: 2px; transition: all 0.2s; text-transform: uppercase; }
+  .broadcast-btn {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 12px 24px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
   .broadcast-btn:hover { background: var(--gold-glow); box-shadow: 0 0 20px var(--gold-glow); }
   .broadcast-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .mic-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text-mid); width: 48px; height: 48px; border-radius: 2px; cursor: pointer; font-size: 20px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; align-self: flex-start; }
+  .mic-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-mid);
+    width: 48px;
+    height: 48px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
   .mic-btn:hover { border-color: var(--gold); }
   .mic-btn.listening { border-color: var(--red); background: rgba(224,85,85,0.1); animation: pulse 1s infinite; color: var(--red); }
+  body.mobile-mode .mobile-badge { display: inline-block; }
   body.mobile-mode .auto-badge { display: none; }
   body.mobile-mode .paste-area { display: block !important; }
   .section-divider { margin: 0 32px; border: none; border-top: 1px solid var(--border); }
-  .status-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); padding: 10px 32px; display: flex; align-items: center; gap: 16px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-dim); }
+  .status-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
   .status-msg { flex: 1; }
   .status-msg.active { color: var(--gold); }
   .status-msg.success { color: var(--green); }
   .status-msg.error { color: var(--red); }
   @media (max-width: 768px) {
-    header { padding: 14px 16px; } .header-title { font-size: 12px; }
+    header { padding: 14px 16px; }
+    .header-title { font-size: 12px; }
     .mission-zone, .grid-section { padding: 16px; }
     .ai-grid { grid-template-columns: 1fr; }
     .synthesis-zone { margin: 0 16px 16px; }
@@ -106,6 +303,12 @@
   </div>
 </header>
 
+<!-- PMM CONTEXT STATUS BAR -->
+<div class="context-bar" id="contextBar">
+  <div class="context-dot loading" id="contextDot"></div>
+  <span id="contextStatus">Fetching PMM broadcast context...</span>
+</div>
+
 <div class="mission-zone">
   <div class="zone-label">// Mission Input</div>
   <div class="mission-input-wrap">
@@ -118,14 +321,13 @@
 
 <div class="grid-section">
   <div class="grid-header">
-    <div class="grid-label">Auto Zone</div>
+    <div class="grid-label auto-zone-label">Auto Zone</div>
     <div class="auto-badge">CLAUDE HANDLES</div>
   </div>
   <div class="ai-grid">
     <div class="ai-card" id="card-notebooklm" style="--card-color: #4caf7d;">
       <div class="card-header"><div class="ai-name">NotebookLM</div><div class="status-dot" id="dot-notebooklm"></div></div>
-      <div class="ai-role">ARCHIVE / PSYCHOLOGICAL LENS</div>
-      <div class="ai-task" id="task-notebooklm"></div>
+      <div class="ai-role">ARCHIVE / CONTEXT RETRIEVAL</div>
       <div class="response-area" id="resp-notebooklm">Waiting for mission...</div>
       <div class="paste-area" id="paste-notebooklm">
         <button class="copy-prompt-btn" id="copy-notebooklm" onclick="copyPrompt('notebooklm')">📋 COPY PROMPT FOR NOTEBOOKLM</button>
@@ -134,8 +336,7 @@
     </div>
     <div class="ai-card" id="card-gemini" style="--card-color: #4a9eff;">
       <div class="card-header"><div class="ai-name">Gemini</div><div class="status-dot" id="dot-gemini"></div></div>
-      <div class="ai-role">JACK'S VOICE / CREATIVE DRAFT</div>
-      <div class="ai-task" id="task-gemini"></div>
+      <div class="ai-role">CREATIVE DRAFTING</div>
       <div class="response-area" id="resp-gemini">Waiting for mission...</div>
       <div class="paste-area" id="paste-gemini">
         <button class="copy-prompt-btn" id="copy-gemini" onclick="copyPrompt('gemini')">📋 COPY PROMPT FOR GEMINI</button>
@@ -144,8 +345,7 @@
     </div>
     <div class="ai-card" id="card-chatgpt" style="--card-color: #9b6dff;">
       <div class="card-header"><div class="ai-name">ChatGPT</div><div class="status-dot" id="dot-chatgpt"></div></div>
-      <div class="ai-role">HOOK STRATEGIST / CONTENT SNIPER</div>
-      <div class="ai-task" id="task-chatgpt"></div>
+      <div class="ai-role">STRUCTURED CRITIQUE</div>
       <div class="response-area" id="resp-chatgpt">Waiting for mission...</div>
       <div class="paste-area" id="paste-chatgpt">
         <button class="copy-prompt-btn" id="copy-chatgpt" onclick="copyPrompt('chatgpt')">📋 COPY PROMPT FOR CHATGPT</button>
@@ -166,7 +366,6 @@
     <div class="ai-card" id="card-grok" style="--card-color: #ff8c42;">
       <div class="card-header"><div class="ai-name">Grok</div><div class="status-dot" id="dot-grok"></div></div>
       <div class="ai-role">CULTURAL PULSE / TRENDS</div>
-      <div class="ai-task" id="task-grok"></div>
       <div class="response-area" id="resp-grok">Waiting for mission...</div>
       <div class="paste-area" id="paste-grok">
         <button class="copy-prompt-btn" id="copy-grok" onclick="copyPrompt('grok')">📋 COPY PROMPT FOR GROK</button>
@@ -176,7 +375,6 @@
     <div class="ai-card" id="card-deepseek" style="--card-color: #e05555;">
       <div class="card-header"><div class="ai-name">DeepSeek</div><div class="status-dot" id="dot-deepseek"></div></div>
       <div class="ai-role">RISK / ADVERSARIAL ANALYSIS</div>
-      <div class="ai-task" id="task-deepseek"></div>
       <div class="response-area" id="resp-deepseek">Waiting for mission...</div>
       <div class="paste-area" id="paste-deepseek">
         <button class="copy-prompt-btn" id="copy-deepseek" onclick="copyPrompt('deepseek')">📋 COPY PROMPT FOR DEEPSEEK</button>
@@ -186,7 +384,6 @@
     <div class="ai-card" id="card-perplexity" style="--card-color: #c9a84c;">
       <div class="card-header"><div class="ai-name">Perplexity</div><div class="status-dot" id="dot-perplexity"></div></div>
       <div class="ai-role">RESEARCH / CURRENT DATA</div>
-      <div class="ai-task" id="task-perplexity"></div>
       <div class="response-area" id="resp-perplexity">Waiting for mission...</div>
       <div class="paste-area" id="paste-perplexity">
         <button class="copy-prompt-btn" id="copy-perplexity" onclick="copyPrompt('perplexity')">📋 COPY PROMPT FOR PERPLEXITY</button>
@@ -210,13 +407,55 @@
 
 <div class="status-bar">
   <div class="status-msg" id="statusMsg">Ready. Enter a mission and deploy.</div>
-  <div>PMM v1.5</div>
+  <div>PMM v1.4</div>
 </div>
 
 <script>
   var PROXY = 'https://pmm-proxy-264350494748.us-central1.run.app/api';
-  var state = { mission: '', prompts: {}, responses: {}, synthesis: '' };
+  var RECALL_URL = 'https://pmm-broadcast-tower-264350494748.us-central1.run.app/recall';
+  var state = { mission: '', prompts: {}, responses: {}, synthesis: '', pmmContext: '' };
 
+  // ─── PMM CONTEXT FETCH ───────────────────────────────────────────────────────
+  // Runs once on load. Fetches /recall and stores context in state.pmmContext.
+  // All 6 AI prompts are then prefixed with this context block.
+  // Auto-zone (NotebookLM, Gemini, ChatGPT): context injected server-side via proxy prompt.
+  // Paste zone (Grok, DeepSeek, Perplexity): context injected into the copied prompt text.
+  async function fetchPMMContext() {
+    var dot = document.getElementById('contextDot');
+    var status = document.getElementById('contextStatus');
+    try {
+      var resp = await fetch(RECALL_URL, { timeout: 10000 });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      var text = await resp.text();
+      state.pmmContext = text.trim();
+      dot.className = 'context-dot loaded';
+      status.textContent = 'PMM context loaded — all 6 AI prompts are context-aware.';
+    } catch(e) {
+      dot.className = 'context-dot error';
+      status.textContent = 'Broadcast unavailable — prompts will run without PMM context. (' + e.message + ')';
+      state.pmmContext = '';
+    }
+  }
+
+  // Wraps raw mission prompt with PMM context header if available
+  function withContext(rawPrompt) {
+    if (!state.pmmContext) return rawPrompt;
+    return '=== PMM CONTEXT (read first) ===\n' + state.pmmContext + '\n\n=== YOUR TASK ===\n' + rawPrompt;
+  }
+
+  // ─── PROMPT GENERATION ───────────────────────────────────────────────────────
+  function generatePrompts(mission) {
+    return {
+      notebooklm: withContext('Search the John Wisdom File and tell me: what insights, beliefs, or past content in this archive are most relevant to this mission: "' + mission + '" — be specific, quote entries if possible.'),
+      gemini: withContext('You are a creative ghostwriter for Jack, a character who speaks to men about building an unshakeable inner world. Mission: "' + mission + '". Write a raw, 150-word Instagram caption in Jack\'s voice — direct, grounded, no fluff. Use the emotional core of the mission.'),
+      chatgpt: withContext('Evaluate this content mission critically: "' + mission + '". What\'s the strongest angle? What\'s missing? What would make this resonate most with men who are emotionally shut down? Give 3 specific improvements. Be sharp, not gentle.'),
+      grok: withContext('What\'s the current cultural conversation around this topic: "' + mission + '"? What are men actually saying about this right now — in comments, podcasts, social media? What\'s the pulse? Keep it under 150 words.'),
+      deepseek: withContext('Play devil\'s advocate on this mission: "' + mission + '". What are the 3 biggest risks of this message landing wrong? What objections would skeptical men have? What could backfire? Be honest and specific.'),
+      perplexity: withContext('Find me 2-3 current data points, studies, or real examples that support or challenge this idea: "' + mission + '". Cite sources if possible. Keep it under 150 words.')
+    };
+  }
+
+  // ─── THEME / MODE TOGGLES ────────────────────────────────────────────────────
   function toggleTheme() { document.body.classList.toggle('light'); }
 
   function toggleMobileMode() {
@@ -232,13 +471,16 @@
     setStatus(isMobile ? 'Mobile mode: all 6 AIs use paste input.' : 'Desktop mode: auto-zone active.', isMobile ? 'active' : '');
   }
 
+  // ─── MIC ─────────────────────────────────────────────────────────────────────
   var recognition = null, isListening = false;
   function toggleMic() {
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) { setStatus('Mic not supported. Try Chrome.', 'error'); return; }
     if (isListening) { recognition.stop(); return; }
     recognition = new SR();
-    recognition.continuous = false; recognition.interimResults = true; recognition.lang = 'en-US';
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
     var micBtn = document.getElementById('micBtn');
     recognition.onstart = function() { isListening = true; micBtn.classList.add('listening'); micBtn.textContent = '🔴'; setStatus('Listening...', 'active'); };
     recognition.onresult = function(e) { var t = ''; for (var i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript; document.getElementById('missionInput').value = t; };
@@ -247,6 +489,7 @@
     recognition.start();
   }
 
+  // ─── STATUS ──────────────────────────────────────────────────────────────────
   function setStatus(msg, type) {
     var el = document.getElementById('statusMsg');
     el.textContent = msg;
@@ -268,57 +511,13 @@
     }
   }
 
-  function setTask(ai, task) {
-    var el = document.getElementById('task-' + ai);
-    if (el) el.textContent = task ? '→ ' + task : '';
-  }
-
-  // Step 1: Claude reads the mission and writes custom prompts for all 6 agents
-  async function generatePrompts(mission) {
-    var orchestratorSystem = 'You are the PMM Orchestrator. You receive a mission statement from a content creator and you write precise, custom instructions for 6 AI agents that will each attack the mission from a completely different angle. You think strategically about what each agent should specifically do with THIS mission — not generic templates. You return ONLY valid JSON, no markdown, no explanation.';
-
-    var orchestratorPrompt = 'Mission: "' + mission + '"\n\n' +
-      'Write a custom prompt for each of these 6 agents. Each prompt must be completely specific to this mission — what angle to take, what to look for, what format to return. Make each one genuinely different from the others.\n\n' +
-      'Agents:\n' +
-      '- notebooklm: Psychological wound reader. Diagnoses the real fear, wound, or unspoken need beneath this mission.\n' +
-      '- gemini: Writes as Jack — a stoic, high-status man who testifies from experience. No advice, no therapy words. Short punchy sentences. Ends on silence.\n' +
-      '- chatgpt: Content sniper. One scroll-stopping hook + one buried truth nobody else is saying about this topic.\n' +
-      '- grok: What are men actually saying about this topic RIGHT NOW in comments, podcasts, forums? The raw pulse, not the polished take.\n' +
-      '- deepseek: Devil\'s advocate. What are the 3 specific ways this message could land wrong or backfire?\n' +
-      '- perplexity: 2-3 current data points, studies, or real examples that support or challenge this mission. Cite sources.\n\n' +
-      'Also write a short "task" label (5 words max) for each agent describing their specific job on this mission.\n\n' +
-      'Return ONLY this JSON structure:\n' +
-      '{\n' +
-      '  "notebooklm": { "task": "...", "prompt": "..." },\n' +
-      '  "gemini": { "task": "...", "prompt": "..." },\n' +
-      '  "chatgpt": { "task": "...", "prompt": "..." },\n' +
-      '  "grok": { "task": "...", "prompt": "..." },\n' +
-      '  "deepseek": { "task": "...", "prompt": "..." },\n' +
-      '  "perplexity": { "task": "...", "prompt": "..." }\n' +
-      '}';
-
-    var response = await fetch(PROXY, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        prompt: orchestratorPrompt,
-        system: orchestratorSystem,
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 2000
-      })
-    });
-    var data = await response.json();
-    if (data.error) throw new Error(data.error);
-    var parsed = JSON.parse(data.text);
-    return parsed;
-  }
-
+  // ─── MISSION EXECUTION ───────────────────────────────────────────────────────
   async function executeMission() {
     var mission = document.getElementById('missionInput').value.trim();
     if (!mission) return;
     state.mission = mission;
     state.responses = {};
-    state.prompts = {};
+    state.prompts = generatePrompts(mission);
 
     document.getElementById('sendBtn').disabled = true;
     document.getElementById('synthesizeBtn').disabled = true;
@@ -326,46 +525,19 @@
     document.getElementById('synthesisOutput').textContent = 'Deploy a mission to generate synthesis...';
     document.getElementById('synthesisOutput').className = 'synthesis-output';
 
-    ['notebooklm','gemini','chatgpt','grok','deepseek','perplexity'].forEach(function(ai) {
-      setCard(ai, 'waiting');
-      setTask(ai, '');
-    });
-
-    // Clear prompt chips
     var preview = document.getElementById('promptsPreview');
     preview.innerHTML = '';
-    preview.classList.remove('visible');
-
-    setStatus('Reading mission... writing agent prompts...', 'active');
-
-    // Step 1: Orchestrator generates custom prompts
-    var agentDefs;
-    try {
-      agentDefs = await generatePrompts(mission);
-    } catch(e) {
-      setStatus('Orchestrator error: ' + e.message, 'error');
-      document.getElementById('sendBtn').disabled = false;
-      return;
-    }
-
-    // Store prompts and show task labels
-    ['notebooklm','gemini','chatgpt','grok','deepseek','perplexity'].forEach(function(ai) {
-      if (agentDefs[ai]) {
-        state.prompts[ai] = agentDefs[ai].prompt;
-        setTask(ai, agentDefs[ai].task);
-      }
-    });
-
-    // Show chips
     preview.classList.add('visible');
-    ['notebooklm','gemini','chatgpt','grok','deepseek','perplexity'].forEach(function(ai) {
+    var roles = {notebooklm:'Archive', gemini:'Draft', chatgpt:'Critique', grok:'Pulse', deepseek:'Risk', perplexity:'Research'};
+    Object.keys(roles).forEach(function(ai) {
       var chip = document.createElement('div');
       chip.className = 'prompt-chip';
-      chip.innerHTML = '<span>' + ai + ':</span> ' + (agentDefs[ai] ? agentDefs[ai].task : '...');
+      chip.innerHTML = '<span>' + roles[ai] + ':</span> ' + ai + (state.pmmContext ? ' ✓ctx' : '');
       preview.appendChild(chip);
     });
 
-    // Show paste areas for paste zone
+    ['notebooklm','gemini','chatgpt','grok','deepseek','perplexity'].forEach(function(ai) { setCard(ai, 'waiting'); });
+
     ['grok','deepseek','perplexity'].forEach(function(ai) {
       document.getElementById('paste-' + ai).classList.add('visible');
       var btn = document.getElementById('copy-' + ai);
@@ -384,8 +556,8 @@
       return;
     }
 
-    // Step 2: Fire auto-zone with custom prompts
-    setStatus('Prompts written. Auto-zone running...', 'active');
+    var contextNote = state.pmmContext ? ' (PMM context injected ✓)' : ' (no PMM context)';
+    setStatus('Mission deployed. Auto-zone running via proxy...' + contextNote, 'active');
     ['notebooklm','gemini','chatgpt'].forEach(function(ai) { setCard(ai, 'thinking'); });
 
     await Promise.all(['notebooklm','gemini','chatgpt'].map(function(ai) { return runAutoZone(ai); }));
@@ -451,30 +623,37 @@
     }
   }
 
+  // ─── SYNTHESIS ───────────────────────────────────────────────────────────────
   async function synthesize() {
     document.getElementById('synthesizeBtn').disabled = true;
     document.getElementById('synthesisOutput').textContent = 'Synthesizing all inputs...';
     document.getElementById('synthesisOutput').className = 'synthesis-output';
     setStatus('Synthesizing...', 'active');
 
-    var prompt = 'You are the PMM editorial director. Six agents just attacked this mission: "' + state.mission + '"\n\n' +
-      'WOUND READER (NotebookLM): ' + (state.responses.notebooklm || 'No response') + '\n\n' +
-      "JACK'S VOICE (Gemini): " + (state.responses.gemini || 'No response') + '\n\n' +
-      'HOOK SNIPER (ChatGPT): ' + (state.responses.chatgpt || 'No response') + '\n\n' +
-      'CULTURAL PULSE (Grok): ' + (state.responses.grok || 'No response') + '\n\n' +
-      'RISK ANALYSIS (DeepSeek): ' + (state.responses.deepseek || 'No response') + '\n\n' +
-      'DATA (Perplexity): ' + (state.responses.perplexity || 'No response') + '\n\n' +
-      'Deliver:\n' +
-      '1. THE FINAL POST — Jack\'s voice, sharpened by the hook, grounded in the wound. Max 150 words. Ready to publish.\n' +
-      '2. KEY INSIGHT — one sentence: what made this land.\n' +
-      '3. WATCH OUT — one sentence: the biggest risk.\n\n' +
-      'Be decisive. Ship it.';
+    var prompt = withContext(
+      'You are the PMM Project Manager synthesizing inputs from 6 AI agents about this mission: "' + state.mission + '"\n\n' +
+      'NOTEBOOKLM (Archive): ' + (state.responses.notebooklm || 'No response') + '\n' +
+      'GEMINI (Draft): ' + (state.responses.gemini || 'No response') + '\n' +
+      'CHATGPT (Critique): ' + (state.responses.chatgpt || 'No response') + '\n' +
+      'GROK (Cultural Pulse): ' + (state.responses.grok || 'No response') + '\n' +
+      'DEEPSEEK (Risk Analysis): ' + (state.responses.deepseek || 'No response') + '\n' +
+      'PERPLEXITY (Research): ' + (state.responses.perplexity || 'No response') + '\n\n' +
+      'Synthesize all of this into:\n' +
+      '1. THE FINAL POST (ready to publish, Jack\'s voice, max 150 words)\n' +
+      '2. KEY INSIGHT (one sentence — what made this land)\n' +
+      '3. RISKS TO WATCH (one sentence from DeepSeek\'s input)\n\n' +
+      'Be decisive. Ship it.'
+    );
 
     try {
       var response = await fetch(PROXY, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: prompt, model: 'claude-sonnet-4-20250514', max_tokens: 1000 })
+        body: JSON.stringify({
+          prompt: prompt,
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000
+        })
       });
       var data = await response.json();
       if (data.error) throw new Error(data.error);
@@ -491,9 +670,15 @@
     }
   }
 
+  // ─── BROADCAST ───────────────────────────────────────────────────────────────
   async function broadcastMission() {
     if (!state.synthesis) return;
-    var broadcastData = { mission: state.mission, synthesis: state.synthesis, responses: state.responses, timestamp: new Date().toISOString() };
+    var broadcastData = {
+      mission: state.mission,
+      synthesis: state.synthesis,
+      responses: state.responses,
+      timestamp: new Date().toISOString()
+    };
     try {
       var xhr = new XMLHttpRequest();
       xhr.open('POST', 'http://localhost:3747/broadcast', false);
@@ -505,6 +690,9 @@
       setStatus('Bridge offline — synthesis copied to clipboard.', '');
     }
   }
+
+  // ─── INIT ────────────────────────────────────────────────────────────────────
+  fetchPMMContext();
 </script>
 </body>
 </html>
