@@ -566,7 +566,7 @@
 
   async function runAutoZone(ai) {
     try {
-      var response = await fetch(PROXY, {
+      var endpoint = PROXY; if (ai === 'gemini') endpoint = 'https://pmm-proxy-264350494748.us-central1.run.app/api/gemini'; if (ai === 'chatgpt') endpoint = 'https://pmm-proxy-264350494748.us-central1.run.app/api/chatgpt'; var response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -646,7 +646,7 @@
     );
 
     try {
-      var response = await fetch(PROXY, {
+      var endpoint = PROXY; if (ai === 'gemini') endpoint = 'https://pmm-proxy-264350494748.us-central1.run.app/api/gemini'; if (ai === 'chatgpt') endpoint = 'https://pmm-proxy-264350494748.us-central1.run.app/api/chatgpt'; var response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
